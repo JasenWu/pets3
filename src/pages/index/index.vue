@@ -4,6 +4,7 @@
    <ul>
      <li v-for="(item,index) in unitList" :key="index">
       <navigator url="/pages/play/main" hover-class="navigator-hover">{{item.title}}</navigator>
+      <div>{{item.des}}</div>
      </li>
    </ul>
  
@@ -12,7 +13,7 @@
 
 <script>
  
-
+import {unitList} from '../../model/index'
 export default {
   components: {
  
@@ -21,11 +22,7 @@ export default {
     return {
       motto: 'Hello World',
       userInfo: {},
-      unitList:[{
-       
-        title:"Unit 01",
-
-      }]
+      unitList:unitList,
     }
   },
  
