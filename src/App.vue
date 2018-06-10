@@ -8,6 +8,10 @@ export default {
 
     console.log('app created and cache logs by setStorageSync')
   },
+
+   onLaunch () {
+      console.log('onLaunch');
+   },
   
 }
 </script>
