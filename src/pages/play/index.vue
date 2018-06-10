@@ -1,28 +1,31 @@
 <template>
-  <div class="container" @click="clickHandle('test click', $event)">
+  <div class="container" >
     
  
-    <audio src="../../static/audio/01.mp3" controls="true" ></audio>
+    <audio :src="url" controls="true" ></audio>
  
   </div>
 </template>
 
 <script>
-import card from '@/components/card'
+ 
+ 
 
 export default {
+  components: {
+ 
+  },
   data () {
     return {
       motto: 'Hello World',
-      userInfo: {}
+      userInfo: {},
+      unit:0,//单元号,
+      url:"../../static/audio/unit01.mp3",
     }
   },
 
-  components: {
-    card
-  },
-
   methods: {
+    
     bindViewTap () {
       const url = '../logs/main'
       wx.navigateTo({ url })
@@ -39,14 +42,21 @@ export default {
         }
       })
     },
-    clickHandle (msg, ev) {
-      console.log('clickHandle:', msg, ev)
-    }
+
   },
 
-  created () {
+  mounted () {
     // 调用应用实例的方法获取全局数据
-    this.getUserInfo()
+    //this.getUserInfo()
+
+    this.unit = parseInt(this.$root.$mp.query.unit);
+    let unit = this.unit;
+    this.url = `http://www.renjie.net.cn/test/audio/unit${unit}.mp3`
+    console.log('unit',unit);
+
+
+    
+      
   }
 }
 </script>

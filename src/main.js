@@ -18,5 +18,6 @@ export default {
       navigationBarTitleText: 'Pets 3 Study',
       navigationBarTextStyle: 'black'
     }
-  }
+  },
+ 
 }

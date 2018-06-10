@@ -7,18 +7,20 @@ export default {
     wx.setStorageSync('logs', logs)
 
     console.log('app created and cache logs by setStorageSync')
-  }
+  },
+  
 }
 </script>
 
 <style>
+page{
+  height: 100%;
+}
 .container {
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
+  padding:0 15px;
+  font-size: 12px;
+ 
   box-sizing: border-box;
 }
 /* this rule will be remove */
