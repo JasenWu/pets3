@@ -23,12 +23,14 @@
  
     </div> -->
 
-     <audio id="myAudio" style="width:100%;" :name="details.title" author="Jason" :poster="details.poster" :src="details.url" controls="true" >
+     <audio id="myAudio" style="width:100%;" bindplay="startPlay" :name="details.title" author="Jason" :poster="details.poster" :src="details.url" controls="true" >
       <!-- bindtimeupdate="musicStart"  <view class="free-MusicProgress">
         <view :style="{'width':progress}"></view>
       </view> -->
     </audio>
     <div>the content is writting...</div>
+
+    <div id="loading" v-show="loading">loading...</div>
  
   </div>
 </template>
@@ -40,6 +42,7 @@ export default {
   components: {},
   data() {
     return {
+      loading:false,
       details: {
         title: "sss",
         unit: 0, //单元号,
@@ -54,6 +57,9 @@ export default {
   },
 
   methods: {
+    startPlay(){
+      this.loading = false;
+    },
     bindViewTap() {
       const url = "../logs/main";
       wx.navigateTo({ url });
@@ -122,6 +128,10 @@ export default {
     this.details.title = unitList[unit - 1].title ;
     this.audioCtx = wx.createAudioContext("myAudio");
     this.audioPlay();
+    this.loading = true;
+    setTimeout(()=>{
+      this.loading = false;
+    },2000)
   }
 };
 </script>
@@ -170,6 +180,19 @@ audio .free-MusicProgress > view {
 }
 
 .layout_content .i_text{
+
+}
+#loading{
+  position: fixed;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  z-index: 9;
+  background: rgba(0,0,0,.8);
+  color:#fff;
+  line-height: 100px;
+  text-align: center;
 
 }
 </style>

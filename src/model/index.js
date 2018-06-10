@@ -79,11 +79,11 @@ export let unitList = [{
 },
 {  
   order:21,
-  title:"Services[1]"
+  title:"Services(1)"
 },
 {  
   order:22,
-  title:"Services[2]"
+  title:"Services(2)"
 },
 {  
   order:23,
