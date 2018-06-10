@@ -37,4 +37,84 @@ export let unitList = [{
   order:10,
   title:"Hobbies and Interest"
 },
+{  
+  order:11,
+  title:"Entertainments and Sports"
+},
+{  
+  order:12,
+  title:"Shops and Commodities"
+},
+{  
+  order:13,
+  title:"Shopping"
+},
+{  
+  order:14,
+  title:"Holiday Festivals"
+},
+{  
+  order:15,
+  title:"Holiday Activities"
+},
+{  
+  order:16,
+  title:"Places and Locations"
+},
+{  
+  order:17,
+  title:"Travel and Tourism"
+},
+{  
+  order:18,
+  title:"Sightseeing and Travel Plans"
+},
+{  
+  order:19,
+  title:"Visit a Doctor and Health  Insurance"
+},
+{  
+  order:20,
+  title:"Bodybuilding and Environmental Sanitation"
+},
+{  
+  order:21,
+  title:"Services[1]"
+},
+{  
+  order:22,
+  title:"Services[2]"
+},
+{  
+  order:23,
+  title:"Making Friendsand Communication"
+},
+{  
+  order:24,
+  title:"Political , Legal and Social Lssuses"
+},
+{  
+  order:25,
+  title:"Work and Posts"
+},
+{  
+  order:26,
+  title:"Finding a Job"
+},
+{  
+  order:27,
+  title:"Education"
+},
+{  
+  order:28,
+  title:"Popular Science"
+},
+{  
+  order:29,
+  title:"History"
+},
+{  
+  order:30,
+  title:"Geography"
+},
 ]

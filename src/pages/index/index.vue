@@ -95,5 +95,7 @@ export default {
    position: fixed;
    left:15px;
    bottom:10px;
+   right:15px;
+   text-align: right;
 }
 </style>
