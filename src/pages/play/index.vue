@@ -2,11 +2,33 @@
   <div class="container" >
     
     <div class="layout_title">Unit {{details.unit}}   {{details.title}}</div>
-    <audio id="myAudio" bindtimeupdate="MusicStart" style="width:100%;" :name="details.title" author="Jason" :poster="details.poster" :src="details.url" controls="true" >
-      <view class="free-MusicProgress">
+   
+    <!-- <div class="layout_content">
+      <ul>
+          <li class="i_item lay_left">
+            <b class="i_name">Melanie:</b>
+            <span class="i_text">Oh,Layth, I'm sure you recognize . Grandmother in this picture? She's in the blue 	
+	         dress.</span>
+          </li>
+          <li class="i_item lay_right">
+            <b class="i_name">Layth:</b>
+            <span class="i_text">Sure, and who's that holding the hand of a boy?</span>
+          </li>
+          <li class="i_item lay_left">
+            <b class="i_name">Melanie:</b>
+            <span class="i_text">That's my older brother,Lester, with my nephew,Nicky, when he  was two years old. My sistr-in-law,Dorothy, is next to him but she's not smiling because she was angry with  Lester.Lester always leaves her and goes out of town on business.</span>
+          </li>
+        
+      </ul>
+ 
+    </div> -->
+
+     <audio id="myAudio" style="width:100%;" :name="details.title" author="Jason" :poster="details.poster" :src="details.url" controls="true" >
+      <!-- bindtimeupdate="musicStart"  <view class="free-MusicProgress">
         <view :style="{'width':progress}"></view>
-      </view>
+      </view> -->
     </audio>
+    <div>the content is writting...</div>
  
   </div>
 </template>
@@ -19,7 +41,7 @@ export default {
   data() {
     return {
       details: {
-        title: "",
+        title: "sss",
         unit: 0, //单元号,
         url: "",
         poster:
@@ -69,7 +91,7 @@ export default {
         });
       }
     },
-    MusicStart(e) {
+    musicStart(e) {
       var progress = parseInt(e.detail.currentTime / e.detail.duration * 100);
       
       this.progress = progress+'%';
@@ -94,10 +116,10 @@ export default {
   mounted() {
     // 调用应用实例的方法获取全局数据
 
-    this.details.unit = parseInt(this.$root.$mp.query.unit);
+    this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
     let unit = this.details.unit;
     this.details.url = `http://www.renjie.net.cn/test/audio/unit${unit}.mp3`;
-    this.details.title = unitList[unit - 1].title;
+    this.details.title = unitList[unit - 1].title ;
     this.audioCtx = wx.createAudioContext("myAudio");
     this.audioPlay();
   }
@@ -105,8 +127,14 @@ export default {
 </script>
 
 <style scoped>
+#myAudio{
+  /* position: fixed;
+  left:15px;
+  right: 0;
+  bottom:15px; */
+}
 .layout_title {
-  font-size: 16px;
+  font-size: 18px;
   padding-bottom: 10px;
 }
 audio {
@@ -123,5 +151,25 @@ audio .free-MusicProgress {
 audio .free-MusicProgress > view {
   background: #48c23d;
   height: 2px;
+}
+.layout_content{
+  background: #48c23d;
+  color:#000;
+}
+.layout_content .i_item{
+  font-size: 14px;
+}
+.layout_content .lay_left{
+  text-align: left;
+}
+.layout_content .lay_right{
+  text-align: right;
+}
+.layout_content .i_name{
+  font-weight: bold;
+}
+
+.layout_content .i_text{
+
 }
 </style>
