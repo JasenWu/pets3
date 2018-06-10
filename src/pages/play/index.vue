@@ -1,70 +1,67 @@
 <template>
   <div class="container" >
     
- 
-    <audio :src="url" controls="true" ></audio>
+    <div class="layout_title">Unit {{details.unit}}   {{details.title}}</div>
+    <audio :src="details.url" controls="true" ></audio>
  
   </div>
 </template>
 
 <script>
- 
- 
+import { unitList } from "../../model/index";
 
 export default {
-  components: {
- 
-  },
-  data () {
+  components: {},
+  data() {
     return {
-      motto: 'Hello World',
+      motto: "Hello World",
       userInfo: {},
-      unit:0,//单元号,
-      url:"../../static/audio/unit01.mp3",
-    }
+      details: {
+        title: "",
+        unit: 0, //单元号,
+        url: ""
+      },
+      unitList: unitList
+    };
   },
 
   methods: {
-    
-    bindViewTap () {
-      const url = '../logs/main'
-      wx.navigateTo({ url })
+   
+    bindViewTap() {
+      const url = "../logs/main";
+      wx.navigateTo({ url });
     },
-    getUserInfo () {
+    getUserInfo() {
       // 调用登录接口
       wx.login({
         success: () => {
           wx.getUserInfo({
-            success: (res) => {
-              this.userInfo = res.userInfo
+            success: res => {
+              this.userInfo = res.userInfo;
             }
-          })
+          });
         }
-      })
-    },
-
+      });
+    }
   },
 
-  mounted () {
+  mounted() {
     // 调用应用实例的方法获取全局数据
     //this.getUserInfo()
 
-    this.unit = parseInt(this.$root.$mp.query.unit);
-    let unit = this.unit;
-    this.url = `http://www.renjie.net.cn/test/audio/unit${unit}.mp3`
-    console.log('unit',unit);
-
-
-    
-      
+    this.details.unit = parseInt(this.$root.$mp.query.unit);
+    let unit = this.details.unit;
+    this.details.url = `http://www.renjie.net.cn/test/audio/unit${unit}.mp3`;
+    this.details.title = unitList[unit - 1].title;
+ 
   }
-}
+};
 </script>
 
 <style scoped>
-.container{
- 
- 
+.layout_title {
+  font-size: 16px;
+  padding-bottom: 10px;
 }
 .userinfo {
   display: flex;
@@ -94,5 +91,4 @@ export default {
   margin-bottom: 5px;
   border: 1px solid #ccc;
 }
-
 </style>
