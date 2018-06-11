@@ -118,3 +118,15 @@ export let unitList = [{
   title:"Geography"
 },
 ]
+
+
+export const timeFormat = (timestamp) => {
+  var date = new Date(parseInt(timestamp) * 1000);
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var hour = date.getHours();
+  var minite = date.getMinutes().toString().padStart(2,'0');
+  var second = date.getSeconds().toString().padStart(2,'0');
+  return minite + ":" + second;
+}
