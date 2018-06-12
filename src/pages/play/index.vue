@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <div class="layout_title">Unit {{details.unit}} {{details.title}}</div>
 
     <!-- <div class="layout_content">
@@ -22,26 +21,10 @@
       </ul>
  
     </div> -->
-
  
-
     <!-- player style -->
-    <div class="audio_area" id="audioplayer">
-      <div class="audio_wrp" id="music" preload="true">
-        <div class="audio_play_area play " @click="startPlay" id="pButton ">
-          <i class="icon_audio_default " v-show="!playing"></i>
-          <i class="icon_audio_playing " v-show="playing"></i>
-        </div>
-        <div class="audio_length tips_global ">{{time}}</div>
-        <div class="audio_info_area ">
-          <strong class="audio_title ">{{details.title}}</strong>
-          <div class="audio_source tips_global ">Jason</div>
-        </div>
-        <div id="timeline" class="progress_bar">
-          <div id="playhead" :style="{'width':progress}"></div>
-        </div>
-      </div>
-    </div>
+    
+    <c-audio :details="details"></c-audio>
     <div>the content is writting...</div>
 
     <div v-if="loading" id="loading">loading</div>
@@ -50,10 +33,12 @@
 </template>
 
 <script>
-import { unitList,timeFormat } from "../../model/index";
+import { unitList,timeFormat,audioSrc,author } from "../../model/index";
  
 export default {
-  components: {},
+  components: {
+    'c-audio':require("./components/video.vue").default
+  },
   data() {
     return {
       details: {
@@ -63,10 +48,12 @@ export default {
       unitList: unitList,
       audioCtx: null,
       progress: 0,
-      loading: false,
+      loading: true,
       audioCtx:null,//音频实例
       playing:false,
-      time:"00:00"
+      time:"00:00",
+      audioSrc:audioSrc,
+      author:author,
     };
   },
 
@@ -102,10 +89,11 @@ export default {
     this.details.title = unitList[unit - 1].title;
  
     const innerAudioContext = wx.createInnerAudioContext()
-    innerAudioContext.autoplay = false;
-    innerAudioContext.src = `http://www.renjie.net.cn/test/audio/unit${unit}.mp3`;
+    innerAudioContext.autoplay = true;
+    innerAudioContext.src = `${this.audioSrc}${unit}.mp3`;
     innerAudioContext.onPlay(() => {
-        console.log('开始播放')
+        console.log('开始播放');
+         this.loading=false;
     })
     //播放更新
     innerAudioContext.onTimeUpdate((res) => {
@@ -117,9 +105,11 @@ export default {
     })
     //可以播放时
     innerAudioContext.onCanplay((res) => {
-       
-      
+       console.log('可以播放');
+     
+        
     })
+    //播放错误时
     innerAudioContext.onError((res) => {
         console.log(res.errMsg)
         console.log(res.errCode)

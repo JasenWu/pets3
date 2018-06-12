@@ -1,3 +1,4 @@
+//课程列表
 export let unitList = [{  
   order:1,
   title:"Greeting and Introduction"
@@ -119,7 +120,7 @@ export let unitList = [{
 },
 ]
 
-
+//时间格式化
 export const timeFormat = (timestamp) => {
   var date = new Date(parseInt(timestamp) * 1000);
   var year = date.getFullYear();
@@ -130,3 +131,7 @@ export const timeFormat = (timestamp) => {
   var second = date.getSeconds().toString().padStart(2,'0');
   return minite + ":" + second;
 }
+//音频资源地址
+export const audioSrc = "http://www.renjie.net.cn/pets3/audio/unit";
+
+export const author = "Jason";
