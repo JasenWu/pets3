@@ -92,12 +92,12 @@ export default {
   color:#18b4ed;
 } 
 .layout_unit_list_ul li navigator {
-    padding: 5px 0;
+    padding: 8px 0;
     font-size: 16px;
 }
 .layout_bottom{
    position: fixed;
-   left:15px;
+    
    bottom:10px;
    right:15px;
    text-align: right;
