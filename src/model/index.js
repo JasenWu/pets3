@@ -131,7 +131,11 @@ export const timeFormat = (timestamp) => {
   var second = date.getSeconds().toString().padStart(2,'0');
   return minite + ":" + second;
 }
+
+export const assetsSrc = "http://www.renjie.net.cn/pets3/";
 //音频资源地址
 export const audioSrc = "http://www.renjie.net.cn/pets3/audio/unit";
 
 export const author = "Jason";
+
+export const autoPlay = true;

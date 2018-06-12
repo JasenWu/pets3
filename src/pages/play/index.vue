@@ -24,20 +24,22 @@
  
     <!-- player style -->
     
-    <c-audio :details="details"></c-audio>
+    <c-audio ref="audioEle" :unit="details.unit" :details="details"></c-audio>
     <div>the content is writting...</div>
 
-    <div v-if="loading" id="loading">loading</div>
+    
 
   </div>
 </template>
 
 <script>
-import { unitList,timeFormat,audioSrc,author } from "../../model/index";
+import { unitList } from "../../model/index";
+import Audio from  "./components/video.vue";//Audio播放组件
  
+
 export default {
   components: {
-    'c-audio':require("./components/video.vue").default
+    'c-audio':Audio
   },
   data() {
     return {
@@ -47,117 +49,42 @@ export default {
         unit: 0, //单元号,
       },
       unitList: unitList,
-      audioCtx: null,
-      progress: 0,
-      loading: true,
-      audioCtx:null,//音频实例
-      playing:false,
-      time:"00:00",
-      audioSrc:audioSrc,
-      author:author,
+ 
     };
   },
 
   methods: {
-    //开始播放
-    startPlay(){
-      if(this.playing){//正在播放
-          this.audioCtx.pause();
-          this.playing = false;
-      }else{
-        this.audioCtx.play();
-        this.playing = true;
-      }
-    },
- 
-    audioPlaying(e) {
-      var progress = parseInt(
-        e.mp.detail.currentTime / e.mp.detail.duration * 100
-      );
-      this.progress = progress + "%";
-      console.log("音乐播放进度为" + e.mp.detail.currentTime);
-      console.log("总长度" + e.mp.detail.duration);
-    },
+    
      
   },
 
   mounted() {
     // 调用应用实例的方法获取全局数据
-
     this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
     let unit = this.details.unit;
-
     this.details.title = unitList[unit - 1].title;
- 
-    const innerAudioContext = wx.createInnerAudioContext()
-    innerAudioContext.autoplay = true;
-    innerAudioContext.src = `${this.audioSrc}${unit}.mp3`;
-    innerAudioContext.onPlay(() => {
-        console.log('开始播放');
-         this.loading=false;
-    })
-    //播放更新
-    innerAudioContext.onTimeUpdate((res) => {
-        this.time = timeFormat(Math.floor(innerAudioContext.currentTime))
-        var progress = parseInt(innerAudioContext.currentTime /innerAudioContext.duration * 100
-      );
-      this.progress = progress + "%";
+
+    //用户退出页面
+    this.$mp.page.onUnload = ()=>{
+       this.$refs.audioEle.audioCtx.destroy();//销毁音频实例
       
-    })
-    //可以播放时
-    innerAudioContext.onCanplay((res) => {
-       console.log('可以播放');
-     
-        
-    })
-    //播放错误时
-    innerAudioContext.onError((res) => {
-        console.log(res.errMsg)
-        console.log(res.errCode)
-    })
+    }
  
-    this.audioCtx = innerAudioContext;
+
   }
 };
+
+
 </script>
 
 <style scoped>
-#loading {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding-top: 50px;
-  text-align: center;
-}
-#myAudio {
-  /* position: fixed;
-  left:15px;
-  right: 0;
-  bottom:15px; */
-}
+
+ 
 .layout_title {
   font-size: 18px;
   padding-bottom: 10px;
 }
-audio {
-  position: relative;
-}
-audio .free-MusicProgress {
-  position: absolute;
-
-  left: 62px;
-  right: 0;
-  bottom: 1px;
-  background: #c3c3c3;
-}
-audio .free-MusicProgress > view {
-  background: #48c23d;
-  height: 2px;
-}
+ 
 .layout_content {
   background: #48c23d;
   color: #000;
@@ -178,124 +105,5 @@ audio .free-MusicProgress > view {
 .layout_content .i_text {
 }
 
-
-/* 自定义播放皮肤 */
-
-.audio_area #playhead {
-  width: 2px;
-  height: 2px;
-  background-color: #0CBB08;
-}
-
-.audio_area {
-  width: 100%;
-  display: inline-block;
-  vertical-align: top;
-  margin: 17px 1px 16px 0;
-  font-size: 0;
-  position: relative;
-  font-weight: 400;
-  text-decoration: none;
-  -webkit-text-size-adjust: none;
-}
-
-.audio_wrp {
-  border: 1px solid #ebebeb;
-  background-color: #fcfcfc;
-  overflow: hidden;
-  padding: 12px 20px 12px 12px;
-}
-
-.audio_play_area {
-  float: left;
-  margin: 9px 22px 10px 5px;
-  font-size: 0;
-  width: 18px;
-  height: 25px;
-}
-
-.audio_area .pic_audio_default {
-  display: none;
-  width: 18px;
-}
-
-.audio_area .audio_length {
-  float: right;
-  font-size: 14px;
-  margin-top: 3px;
-  margin-left: 1em;
-}
-
-.audio_info_area {
-  overflow: hidden;
-}
-
-.audio_area .audio_title {
-  font-weight: 400;
-  font-size: 17px;
-  margin-top: -2px;
-  width: auto;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  word-wrap: normal;
-}
-
-.audio_area .audio_source {
-  font-size: 14px;
-}
-
-.tips_global {
-  color: #8c8c8c;
-}
-
-.audio_area .progress_bar {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  background-color: #eee;
-  height: 2px;
-  width: 100%;
-}
-
-
-.audio_play_area .icon_audio_default {
-  background: transparent url('http://www.renjie.net.cn/pets3/img/icon_audio_unread26f1f1.png') no-repeat 0 0;
-  width: 18px;
-  height: 25px;
-  vertical-align: middle;
-  -webkit-background-size: 18px auto;
-  background-size: 18px auto;
-  
-}
-
-.audio_play_area .icon_audio_playing {
-  background: transparent url('http://www.renjie.net.cn/pets3/img/icon_audio_reading_126f1f1.png') no-repeat 0 0;
-  width: 18px;
-  height: 25px;
-  vertical-align: middle;
-  -webkit-background-size: 18px auto;
-  background-size: 18px auto;
-  -webkit-animation: audio_playing 1s infinite;
-
-}
-
-@-webkit-keyframes audio_playing {
-  30% {
-    background-image: url('http://www.renjie.net.cn/pets3/img/icon_audio_reading_126f1f1.png')
-  }
-  31% {
-    background-image: url('http://www.renjie.net.cn/pets3/img/icon_audio_reading_226f1f1.png')
-  }
-  61% {
-    background-image: url('http://www.renjie.net.cn/pets3/img/icon_audio_reading_226f1f1.png')
-  }
-  62% {
-    background-image: url(http://www.renjie.net.cn/pets3/img/icon_audio_reading_326f1f1.png)
-  }
-  100% {
-    background-image: url(http://www.renjie.net.cn/pets3/img/icon_audio_reading_326f1f1.png)
-  }
-}
 
 </style>

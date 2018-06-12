@@ -5,13 +5,27 @@ export default {
     const logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-
-    console.log('app created and cache logs by setStorageSync')
+ 
   },
-
-   onLaunch () {
-      console.log('onLaunch');
+   onLaunch (options) {
+      console.log('onLaunch',options);
    },
+   onShow(options){
+     console.log('onShow',options);
+   },
+   onHide(){
+     console.log('onHide');
+   },
+   onError(){
+     console.log('onError');
+   },
+   onPageNotFound(){
+     console.log('onPageNotFound');
+   },
+   otherData:{
+     msg:'test'
+   }
+  
   
 }
 </script>
