@@ -2,6 +2,17 @@
   <div class="container">
     <div class="layout_title">Unit {{details.unit}} {{details.title}}</div>
 
+    
+ 
+    <!-- player style -->
+    
+    <c-audio ref="audioEle" :unit="details.unit" :details="details"></c-audio>
+    
+
+    <ul class="layout_list_wrap">
+      <li v-for="(item,index) in unitList[0].children" :key="index" @tap="toDialog(item)">{{item.title}}</li>
+    </ul>
+
     <!-- <div class="layout_content">
       <ul>
           <li class="i_item lay_left">
@@ -21,11 +32,6 @@
       </ul>
  
     </div> -->
- 
-    <!-- player style -->
-    
-    <c-audio ref="audioEle" :unit="details.unit" :details="details"></c-audio>
-    <div>the content is writting...</div>
 
     
 
@@ -54,7 +60,12 @@ export default {
   },
 
   methods: {
+    toDialog(item){
+   
+       this.$refs.audioEle.audioCtx.seek(item.startTime);//销毁音频实例
     
+        
+    }
      
   },
 
@@ -77,7 +88,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style scoped lang="less">
 
  
 .layout_title {
@@ -103,6 +114,15 @@ export default {
 }
 
 .layout_content .i_text {
+}
+.layout_list_wrap{
+  width: 100%;
+}
+
+.layout_list_wrap li{
+  width: 100%;
+  line-height: 28px;
+  border-bottom:1px solid #ccc; 
 }
 
 

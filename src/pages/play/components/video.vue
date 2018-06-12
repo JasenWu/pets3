@@ -2,7 +2,7 @@
 <section>
    <div class="audio_area" id="audioplayer">
     <div class="audio_wrp" id="music" preload="true">
-      <div class="audio_play_area play " @click="togglePlay(playing)" id="pButton ">
+      <div class="audio_play_area play " @tap="togglePlay(playing)" id="pButton ">
         <i class="icon_audio_default " v-show="!playing"></i>
         <i class="icon_audio_playing " v-show="playing"></i>
       </div>
@@ -12,7 +12,9 @@
         <div class="audio_source tips_global ">{{author}}</div>
       </div>
       <div id="timeline" class="progress_bar">
-        <div id="playhead" :style="{'width':progress}"></div>
+        <div id="playhead" :style="{'width':progress}">
+          <div class="i_drager"></div>
+        </div>
       </div>
     </div>
  
@@ -80,6 +82,8 @@ export default {
       //播放更新
       innerAudioContext.onTimeUpdate(res => {
         this.time = timeFormat(Math.floor(innerAudioContext.currentTime));
+        console.log('currentTime',innerAudioContext.currentTime);
+        console.log('duration',innerAudioContext.duration);
         var progress = parseInt(
           innerAudioContext.currentTime / innerAudioContext.duration * 100
         );
@@ -92,6 +96,29 @@ export default {
         this.playing = true;
         this.loading = false;
       });
+      //音频播放结束时
+      innerAudioContext.onEnded(res => {
+        console.log("可以播放");
+        this.playing = false;
+        
+      });
+
+      //音频播放结束时
+      innerAudioContext.onSeeking(res => {
+        innerAudioContext.pause();
+        this.playing = false;
+        
+      });
+
+      //音频播放结束时
+      innerAudioContext.onSeeked(res => {
+        innerAudioContext.play();
+        this.playing = false;
+        
+      });
+
+      
+      
       //播放错误时
       innerAudioContext.onError(res => {
         console.log(res.errMsg);
@@ -125,13 +152,25 @@ export default {
   beforeDestroy() {}
 };
 </script>
-<style>
+<style lang="less">
 /* 自定义播放皮肤 */
 
 .audio_area #playhead {
   width: 2px;
   height: 2px;
   background-color: #0cbb08;
+  position: relative;
+  .i_drager{
+    @size:4px;
+    position: absolute;
+    width:@size;
+    height:@size;
+    right:-@size/2;
+    top:-@size/2;
+    border-radius:@size/2;
+    background: red;
+    
+  }
 }
 
 .audio_area {

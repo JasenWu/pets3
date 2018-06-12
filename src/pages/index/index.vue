@@ -65,7 +65,7 @@ export default {
 };
 </script>
 
-<style scoped >
+<style scoped lang="less" >
  
 .layout_title {
     font-size: 16px;
@@ -105,3 +105,4 @@ export default {
 
 }
 </style>
+ 
