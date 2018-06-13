@@ -24,13 +24,12 @@
  
 </template>
 <script>
-import { timeFormat, audioSrc, author, autoPlay } from "../../../model/index";
-import Loading from "../../../components/loading.vue"
- 
+import {unitList, timeFormat, audioSrc, author, autoPlay } from "../../../model/index";
+import Loading from "../../../components/loading.vue";
 
 export default {
-  components:{
-    loading:Loading
+  components: {
+    loading: Loading
   },
   props: {
     details: {
@@ -39,16 +38,22 @@ export default {
         title: ""
       }
     },
-    unit: {
-      type: Number,
-      default: 0
+
+    playingItem: {
+      type: Object,
+      default: {
+        title: ""
+      }
     }
   },
   watch: {
-    unit(val) {
-      if (val) {
-        this.play();
-      }
+    details: {
+      handler: function(newVal, oldVal) {
+        if (newVal.unit) {
+          this.play();
+        }
+      },
+      deep: true
     }
   },
   data() {
@@ -64,30 +69,37 @@ export default {
   },
   methods: {
     init() {
-      if (this.unit <= 0) {
+      if (this.details.unit <= 0) {
         //非法参数，不播放
         return; //非法参数，不播放
       }
 
       const innerAudioContext = wx.createInnerAudioContext();
       innerAudioContext.autoplay = autoPlay;
-      innerAudioContext.src = `${this.audioSrc}${this.unit}.mp3`;
-      console.log(`${this.audioSrc}${this.unit}.mp3`);
-     
+
+      innerAudioContext.src = `${this.audioSrc}${this.details.unit}.mp3`;
+ 
       innerAudioContext.onPlay(() => {
         console.log("开始播放");
-        
       });
 
       //播放更新
       innerAudioContext.onTimeUpdate(res => {
         this.time = timeFormat(Math.floor(innerAudioContext.currentTime));
-        console.log('currentTime',innerAudioContext.currentTime);
-        console.log('duration',innerAudioContext.duration);
+        console.log("currentTime", innerAudioContext.currentTime);
+        console.log("duration", innerAudioContext.duration);
         var progress = parseInt(
           innerAudioContext.currentTime / innerAudioContext.duration * 100
         );
         this.progress = progress + "%";
+
+        if (
+          this.playingItem &&
+          this.playingItem.endTime <= innerAudioContext.currentTime
+        ) {
+          innerAudioContext.pause(); //暂停
+          this.playing = false;
+        }
       });
 
       //可以播放时
@@ -100,25 +112,20 @@ export default {
       innerAudioContext.onEnded(res => {
         console.log("可以播放");
         this.playing = false;
-        
       });
 
       //音频播放结束时
       innerAudioContext.onSeeking(res => {
         innerAudioContext.pause();
         this.playing = false;
-        
       });
 
       //音频播放结束时
       innerAudioContext.onSeeked(res => {
         innerAudioContext.play();
         this.playing = false;
-        
       });
 
-      
-      
       //播放错误时
       innerAudioContext.onError(res => {
         console.log(res.errMsg);
@@ -141,7 +148,6 @@ export default {
     //开始播放
     play() {
       this.init();
-      
     }
   },
 
@@ -160,16 +166,15 @@ export default {
   height: 2px;
   background-color: #0cbb08;
   position: relative;
-  .i_drager{
-    @size:4px;
+  .i_drager {
+    @size: 4px;
     position: absolute;
-    width:@size;
-    height:@size;
-    right:-@size/2;
-    top:-@size/2;
-    border-radius:@size/2;
+    width: @size;
+    height: @size;
+    right: -@size / 2;
+    top: -@size / 2;
+    border-radius: @size / 2;
     background: red;
-    
   }
 }
 

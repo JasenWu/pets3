@@ -1,203 +1,46 @@
-//课程列表
-export let unitList = [{  
-  order:1,
-  title:"Greeting and Introduction",
-  children:[
-    {
-      title:"Dialog 1",
-      startTime:0,
-      endTime:200,
-    },
-    {
-      title:"Dialog 2",
-      startTime:201,
-      endTime:400,
-    },
-    {
-      title:"Dialog 3",
-      startTime:401,
-      endTime:600,
-    },
-    {
-      title:"Dialog 4",
-      startTime:601,
-      endTime:1000,
-    }
-
-  ]
-},{  
-  order:2,
-  title:"People",
-  children:[]
-},
-{  
-  order:3,
-  title:"House and Family",
-  children:[]
-},
-{  
-  order:4,
-  title:"Environment",
-  children:[]
-},
-{  
-  order:5,
-  title:"Weather and Climate",
-  children:[]
-},
-{  
-  order:6,
-  title:"Eating and Drinking",
-  children:[]
-},
-{  
-  order:7,
-  title:"Food Culture",
-  children:[]
-},
-{  
-  order:8,
-  title:"At Home",
-  children:[]
-},
-{  
-  order:9,
-  title:"At Work",
-  children:[]
-},
-{  
-  order:10,
-  title:"Hobbies and Interest",
-  children:[]
-},
-{  
-  order:11,
-  title:"Entertainments and Sports",
-  children:[]
-},
-{  
-  order:12,
-  title:"Shops and Commodities",
-  children:[]
-},
-{  
-  order:13,
-  title:"Shopping",
-  children:[]
-},
-{  
-  order:14,
-  title:"Holiday Festivals",
-  children:[]
-},
-{  
-  order:15,
-  title:"Holiday Activities",
-  children:[]
-},
-{  
-  order:16,
-  title:"Places and Locations",
-  children:[]
-},
-{  
-  order:17,
-  title:"Travel and Tourism",
-  children:[]
-},
-{  
-  order:18,
-  title:"Sightseeing and Travel Plans",
-  children:[]
-},
-{  
-  order:19,
-  title:"Visit a Doctor and Health  Insurance",
-  children:[]
-},
-{  
-  order:20,
-  title:"Bodybuilding and Environmental Sanitation",
-  children:[]
-},
-{  
-  order:21,
-  title:"Services(1)",
-  children:[]
-},
-{  
-  order:22,
-  title:"Services(2)",
-  children:[]
-},
-{  
-  order:23,
-  title:"Making Friendsand Communication",
-  children:[]
-},
-{  
-  order:24,
-  title:"Political , Legal and Social Lssuses",
-  children:[]
-},
-{  
-  order:25,
-  title:"Work and Posts",
-  children:[]
-},
-{  
-  order:26,
-  title:"Finding a Job",
-  children:[]
-},
-{  
-  order:27,
-  title:"Education",
-  children:[]
-},
-{  
-  order:28,
-  title:"Popular Science",
-  children:[]
-},
-{  
-  order:29,
-  title:"History",
-  children:[]
-},
-{  
-  order:30,
-  title:"Geography",
-  children:[]
-},
-]
-
+ 
 
 //课程列表
-export let unitList2 = {
+export let unitList = {
   1:{  
     order:1,
     title:"Greeting and Introduction",
+    src:"http://node2d-file.hep.com.cn/14f7862e3fab7e369aa61350a08183e6.mp3",
     children:[
       {
         title:"Dialog 1",
         startTime:0,
-        endTime:200,
+        endTime:188,
       },
       {
         title:"Dialog 2",
-        startTime:201,
-        endTime:400,
+        startTime:189,
+        endTime:321,
       },
       {
         title:"Dialog 3",
-        startTime:401,
-        endTime:600,
+        startTime:322,
+        endTime:469,
       },
       {
         title:"Dialog 4",
-        startTime:601,
-        endTime:1000,
+        startTime:470,
+        endTime:553,
+      },
+      {
+        title:"Passage",
+        startTime:554,
+        endTime:733,
+      },
+      {
+        title:"Exercises A",
+        startTime:734,
+        endTime:810,
+      },
+      {
+        title:"Exercises B",
+        startTime:810,
+        endTime:"",
       }
   
     ]

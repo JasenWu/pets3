@@ -7,8 +7,9 @@
   </div>
    <ul class="layout_unit_list_ul">
      <li v-for="(item,index) in unitList" :key="index">
-      <navigator :url="'/pages/play/main?unit='+item.order" hover-class="navigator-hover">Unit {{item.order}}&nbsp;{{item.title}}</navigator>
-      <div>{{item.des}}</div>
+          
+          <navigator :url="'/pages/play/main?unit='+item.order" hover-class="navigator-hover">Unit {{item.order}}&nbsp;{{item.title}}</navigator>
+      
      </li>
    </ul>
  
@@ -22,6 +23,9 @@
 
 <script>
 import { unitList } from "../../model/index";
+ 
+
+
 export default {
   components: {},
   data() {
@@ -58,7 +62,8 @@ export default {
     }
   },
 
-  created() {
+  mounted() {
+   
     // 调用应用实例的方法获取全局数据
     //this.getUserInfo();
   }

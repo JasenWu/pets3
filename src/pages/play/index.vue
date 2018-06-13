@@ -6,11 +6,11 @@
  
     <!-- player style -->
     
-    <c-audio ref="audioEle" :unit="details.unit" :details="details"></c-audio>
+    <c-audio ref="audioEle" :playingItem="playingItem"  :details="details"></c-audio>
     
 
-    <ul class="layout_list_wrap">
-      <li v-for="(item,index) in unitList[0].children" :key="index" @tap="toDialog(item)">{{item.title}}</li>
+    <ul class="layout_list_wrap" v-if="details.unit>0">
+      <li v-for="(item,index) in unitList[details.unit].children" :key="index" @tap="toDialog(item)">{{item.title}}</li>
     </ul>
 
     <!-- <div class="layout_content">
@@ -55,12 +55,14 @@ export default {
         unit: 0, //单元号,
       },
       unitList: unitList,
+      playingItem:null
  
     };
   },
 
   methods: {
     toDialog(item){
+       this.playingItem = item;
    
        this.$refs.audioEle.audioCtx.seek(item.startTime);//销毁音频实例
     
@@ -73,7 +75,7 @@ export default {
     // 调用应用实例的方法获取全局数据
     this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
     let unit = this.details.unit;
-    this.details.title = unitList[unit - 1].title;
+    this.details.title = unitList[unit].title;
 
     //用户退出页面
     this.$mp.page.onUnload = ()=>{
@@ -119,10 +121,13 @@ export default {
   width: 100%;
 }
 
-.layout_list_wrap li{
+.layout_list_wrap{
+   li{
   width: 100%;
   line-height: 28px;
   border-bottom:1px solid #ccc; 
+  color:#18b4ed;
+}
 }
 
 
