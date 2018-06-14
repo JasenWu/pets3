@@ -10,18 +10,16 @@
     
 
     <ul class="layout_list_wrap" v-if="details.unit>0">
-      <li v-for="(item,index) in unitList[details.unit].children" :key="index" @tap="toDialog(item)">{{item.title}}<i class="icon alifont af-you"></i></li>
+      <li v-for="(item,index) in unitList[details.unit].children" :key="index" @tap="toDialog(item,index)">{{item.title}}<i class="icon alifont af-you"></i></li>
     </ul>
 
-    <div class="layout_content" v-if="details.unit>0">
+    <div class="layout_content" v-if="details.unit >0 && unitList[details.unit].children[playingItem.order].content">
       <ul>
-          <li class="i_item" :class="{'layout_right':item.role == 2,'layout_left':item.role == 1,'layout_des':item.role == 0}" v-for="(item,index) in  unitList[details.unit].children[1].content.contents" :key="item.startTime">
-            <b v-if="item.role != 0" class="i_name">{{unitList[details.unit].children[1].content.roles[item.role].name}}</b>
+          <li class="i_item" :class="{'layout_right':item.role == 2,'layout_left':item.role == 1,'layout_des':item.role == 0}" v-for="(item,index) in  unitList[details.unit].children[playingItem.order].content.contents" :key="item.startTime">
+            <b v-if="item.role != 0" class="i_name">{{unitList[details.unit].children[playingItem.order].content.roles[item.role].name}}</b>
             <span class="i_text">{{item.text}}</span>
             <span v-if="item.show_zh  == true" class="i_text">{{item.text_zh}}</span>
           </li>
-           
-        
       </ul>
  
     </div>
@@ -48,18 +46,23 @@ export default {
         unit: 0, //单元号,
       },
       unitList: unitList,
-      playingItem:null,
+      playingItem:{
+        order:1
+      },
       initAudio:false,//控制audio组件的渲染
  
     };
   },
 
   methods: {
-    toDialog(item){
+    toDialog(item,index){
        this.playingItem = item;
+
+       this.playingItem.order = index;
        this.$refs.audioEle.audioCtx.seek(item.startTime);//路转播放
        this.$refs.audioEle.playing = false;
        this.$refs.audioEle.loading = true;
+       console.log('index',index);
   
     }
      

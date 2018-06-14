@@ -8,6 +8,7 @@ export let unitList = {
     src:"http://node2d-file.hep.com.cn/14f7862e3fab7e369aa61350a08183e6.mp3",
     children:{
       1:{
+        order:1,
         title:"Dialog 1",
         startTime:0,
         endTime:189,
@@ -115,34 +116,41 @@ export let unitList = {
         }
       },
       2:{
+        order:2,
         title:"Dialog 2",
         startTime:190,
         endTime:321,
+        children:{}
       },
       3:{
         title:"Dialog 3",
         startTime:322,
         endTime:469,
+        children:{}
       },
       4:{
         title:"Dialog 4",
         startTime:470,
         endTime:553,
+        children:{}
       },
       5:{
         title:"Passage",
         startTime:554,
         endTime:733,
+        children:{}
       },
       6:{
         title:"Exercises A",
         startTime:734,
         endTime:810,
+        children:{}
       },
       7:{
         title:"Exercises B",
         startTime:810,
         endTime:"",
+        children:{}
       }
     }
   },
