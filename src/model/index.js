@@ -1,4 +1,5 @@
  
+ 
 
 //课程列表
 export let unitList = {
@@ -33,14 +34,14 @@ export let unitList = {
               role:0,
               text:"Melanie Sanders brings out her photo album to show her new Egyptian friend,Layth, pictures of her family.",
               text_zh:"梅兰妮 桑德斯拿出相册，给她的埃及新朋友蕾斯看好的家庭照",
-              show_zh:false,
+              
 
             },
             {
               role:1,
               text:"Oh,Layth, I'm sure you recognize . Grandmother in this picture? She's in the blue  dress.",
               text_zh:"噢，我肯定你从这张照片上认出我的奶奶了，她穿着蓝色的连衣裙。",
-              show_zh:true,
+              
             },
             {
               role:2,
@@ -320,3 +321,6 @@ export const audioSrc = "http://www.renjie.net.cn/pets3/audio/unit";
 export const author = "Jason";
 
 export const autoPlay = false;
+
+
+ 

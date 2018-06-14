@@ -11,12 +11,12 @@
         <i class="icon alifont af-you"></i>
       </li>
     </ul>
-      <section v-if="playingItem.order" class="layout_navigation" @tap="toList">
-        <i class="icon alifont af-xiangzuo"></i>&nbsp;
-        <sapn>Back</sapn>
-      </section>
+    <section v-if="playingItem.order" class="layout_navigation" @tap="toList">
+      <i class="icon alifont af-xiangzuo"></i>&nbsp;
+      <sapn>Back</sapn>
+    </section>
     <section v-if="details.unit >0 && unitList[details.unit].children[playingItem.order] && unitList[details.unit].children[playingItem.order].content && playingItem.order">
-      
+
       <div class="layout_content">
         <ul>
           <li class="i_item" :class="{'layout_right':item.role == 2,'layout_left':item.role == 1,'layout_des':item.role == 0}" v-for="(item,index) in  unitList[details.unit].children[playingItem.order].content.contents" :key="item.startTime">
@@ -29,7 +29,7 @@
       </div>
     </section>
 
-    <div  v-if="playingItem.order" class="layout_tips">the content is writting...</div>
+    <div v-if="playingItem.order" class="layout_tips">the content is writting...</div>
 
   </div>
 </template>
@@ -37,6 +37,7 @@
 <script>
 import { unitList } from "../../model/index";
 import Audio from "./components/video.vue"; //Audio播放组件
+ 
 
 export default {
   components: {
@@ -58,7 +59,7 @@ export default {
   },
 
   methods: {
-    toList(){
+    toList() {
       this.playingItem = {};
       this.playingItem.order = 0;
     },
@@ -74,6 +75,21 @@ export default {
   },
 
   mounted() {
+ 
+    // wx.request({
+    //   url: "http://www.renjie.net.cn/pets3/data/index.js", //仅为示例，并非真实的接口地址
+    //   data: {
+    //     x: "",
+    //     y: ""
+    //   },
+    //   header: {
+    //     "content-type": "application/json" // 默认值
+    //   },
+    //   success: function(res) {
+    //     console.log(res.data);
+    //   }
+    // });
+
     // 调用应用实例的方法获取全局数据
     this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
     let unit = this.details.unit;
@@ -100,7 +116,7 @@ export default {
 
 .layout_content .i_item {
   font-size: 18px;
-  color: #000;
+  color: #303030;
   padding-bottom: 10px;
   .i_text {
     border-radius: 5px;
@@ -112,14 +128,14 @@ export default {
     text-align: left;
     .i_text {
       background: #a1e665;
-      color: #000;
+      color: #303030;
     }
   }
   &.layout_left {
     text-align: left;
     .i_text {
       background: #f3f3f3;
-      color: #000;
+      color: #303030;
     }
   }
   &.layout_right {
@@ -130,7 +146,7 @@ export default {
   }
   .i_name {
     font-size: 12px;
-    color: #000;
+    color: #303030;
   }
 }
 
@@ -148,7 +164,7 @@ export default {
 .layout_tips {
   padding-top: 15px;
   padding-bottom: 15px;
-  
+
   border: 1px dotted #ccc;
 }
 .layout_navigation {
@@ -156,7 +172,7 @@ export default {
     font-size: 20px;
   }
   display: flex;
-  color: #000;
+  color: #303030;
   font-size: 16px;
   font-weight: normal;
   padding-top: 20px;
