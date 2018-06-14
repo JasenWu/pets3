@@ -106,7 +106,7 @@ export default {
       //可以播放时
       innerAudioContext.onCanplay(res => {
         console.log("可以播放");
-        this.playing = true;
+        this.playing = autoPlay;
         this.loading = false;
       });
       //音频播放结束时

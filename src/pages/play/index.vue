@@ -13,25 +13,18 @@
       <li v-for="(item,index) in unitList[details.unit].children" :key="index" @tap="toDialog(item)">{{item.title}}<i class="icon alifont af-you"></i></li>
     </ul>
 
-    <!-- <div class="layout_content">
+    <div class="layout_content" v-if="details.unit>0">
       <ul>
-          <li class="i_item lay_left">
-            <b class="i_name">Melanie:</b>
-            <span class="i_text">Oh,Layth, I'm sure you recognize . Grandmother in this picture? She's in the blue 	
-	         dress.</span>
+          <li class="i_item" :class="{'layout_right':item.role == 2,'layout_left':item.role == 1,'layout_des':item.role == 0}" v-for="(item,index) in  unitList[details.unit].children[1].content.contents" :key="item.startTime">
+            <b v-if="item.role != 0" class="i_name">{{unitList[details.unit].children[1].content.roles[item.role].name}}</b>
+            <span class="i_text">{{item.text}}</span>
+            <span v-if="item.show_zh  == true" class="i_text">{{item.text_zh}}</span>
           </li>
-          <li class="i_item lay_right">
-            <b class="i_name">Layth:</b>
-            <span class="i_text">Sure, and who's that holding the hand of a boy?</span>
-          </li>
-          <li class="i_item lay_left">
-            <b class="i_name">Melanie:</b>
-            <span class="i_text">That's my older brother,Lester, with my nephew,Nicky, when he  was two years old. My sistr-in-law,Dorothy, is next to him but she's not smiling because she was angry with  Lester.Lester always leaves her and goes out of town on business.</span>
-          </li>
+           
         
       </ul>
  
-    </div> -->
+    </div>
 
     
 
@@ -105,25 +98,45 @@ export default {
   padding-bottom: 10px;
 }
  
-.layout_content {
-  background: #48c23d;
-  color: #000;
-}
+ 
 .layout_content .i_item {
-  font-size: 14px;
-}
-.layout_content .lay_left {
+  font-size: 18px;
+   color: #000;
+   padding-bottom: 10px;
+  .i_text{
+    border-radius: 5px;
+    background: #eee;
+    display: block;
+    padding: 5px;
+  }
+  &.layout_des{
+    text-align: left;
+  .i_text{
+      background: rgb(154, 231, 154);
+      color:#000;
+  }
+  }
+  &.layout_left{
   text-align: left;
-}
-.layout_content .lay_right {
-  text-align: right;
-}
-.layout_content .i_name {
-  font-weight: bold;
-}
+  .i_text{
+      background: #18b4ed;
+      color:#fff;
+  }
 
-.layout_content .i_text {
+  }
+  &.layout_right{
+  text-align: right;
+  }
+  .i_name{
+     
+    font-size: 12px;
+    color:#ccc;
+  }
 }
+ 
+ 
+ 
+
  
 
 .layout_list_wrap{
