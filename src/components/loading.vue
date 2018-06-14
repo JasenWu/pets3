@@ -8,7 +8,7 @@
 
 <script>
 import { assetsSrc } from   "../model/index";
- console.log('mounted',assetsSrc);
+ console.log('mounted',assetsSrc);//todo
 export default {
   props:{
     loading:{

@@ -2,19 +2,14 @@
 export default {
   created () {
     // 调用API从本地缓存中获取数据
-    const logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
+     console.log('created');
  
   },
    onLaunch (options) {
       console.log('onLaunch',options);
    },
-   onShow(options){
-     console.log('onShow',options);
-   },
-   onHide(){
-     console.log('onHide');
+   onReady(){
+      console.log('onReady');
    },
    onError(){
      console.log('onError');
@@ -22,9 +17,7 @@ export default {
    onPageNotFound(){
      console.log('onPageNotFound');
    },
-   otherData:{
-     msg:'test'
-   }
+   
   
   
 }

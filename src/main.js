@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-//import 'http://www.renjie.net.cn/pets3/iconfont/iconfont.css'
+import './assets/iconfont/iconfont.css';
 
 Vue.config.productionTip = false
 App.mpType = 'app'
@@ -18,6 +18,22 @@ export default {
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'Pets 3 Study',
       navigationBarTextStyle: 'black'
-    }
+    },
+    // tabBar: {
+    //   "list": [{
+    //     "pagePath": "pages/index/main",
+    //     "text": "首页"
+    //   }, {
+    //     "pagePath": "pages/logs/main",
+    //     "text": "日志"
+    //   }]
+    // },
+    // networkTimeout: {
+    //   "request": 10000,
+    //   "downloadFile": 10000
+    // },
+    // debug: true
   },
+
+  
 }

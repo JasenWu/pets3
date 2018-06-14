@@ -69,6 +69,7 @@ export default {
   },
   methods: {
     init() {
+      console.log('start playing')
       if (this.details.unit <= 0) {
         //非法参数，不播放
         return; //非法参数，不播放
@@ -152,6 +153,7 @@ export default {
   },
 
   mounted() {
+    console.log('hei')
     this.play();
   },
 

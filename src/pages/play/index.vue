@@ -6,11 +6,11 @@
  
     <!-- player style -->
     
-    <c-audio ref="audioEle" :playingItem="playingItem"  :details="details"></c-audio>
+    <c-audio v-if="initAudio" ref="audioEle" :playingItem="playingItem"  :details="details"></c-audio>
     
 
     <ul class="layout_list_wrap" v-if="details.unit>0">
-      <li v-for="(item,index) in unitList[details.unit].children" :key="index" @tap="toDialog(item)">{{item.title}}</li>
+      <li v-for="(item,index) in unitList[details.unit].children" :key="index" @tap="toDialog(item)">{{item.title}}<i class="icon alifont af-you"></i></li>
     </ul>
 
     <!-- <div class="layout_content">
@@ -55,7 +55,8 @@ export default {
         unit: 0, //单元号,
       },
       unitList: unitList,
-      playingItem:null
+      playingItem:null,
+      initAudio:false,//控制audio组件的渲染
  
     };
   },
@@ -63,10 +64,10 @@ export default {
   methods: {
     toDialog(item){
        this.playingItem = item;
-   
-       this.$refs.audioEle.audioCtx.seek(item.startTime);//销毁音频实例
-    
-        
+       this.$refs.audioEle.audioCtx.seek(item.startTime);//路转播放
+       this.$refs.audioEle.playing = false;
+       this.$refs.audioEle.loading = true;
+  
     }
      
   },
@@ -76,10 +77,16 @@ export default {
     this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
     let unit = this.details.unit;
     this.details.title = unitList[unit].title;
+    
+    this.initAudio = true;
+    console.log('this',this.$mp.page.onLoad.toString())
+ 
 
     //用户退出页面
     this.$mp.page.onUnload = ()=>{
+       console.log('退出页面')
        this.$refs.audioEle.audioCtx.destroy();//销毁音频实例
+       this.initAudio = false;
       
     }
  
@@ -117,17 +124,18 @@ export default {
 
 .layout_content .i_text {
 }
-.layout_list_wrap{
-  width: 100%;
-}
+ 
 
 .layout_list_wrap{
-   li{
   width: 100%;
-  line-height: 28px;
-  border-bottom:1px solid #ccc; 
-  color:#18b4ed;
-}
+   li{
+      width: 100%;
+      line-height: 36px;
+      border-bottom:1px solid #eee; 
+      color:#18b4ed;
+      display: flex;
+      justify-content:space-between;
+    }
 }
 
 
