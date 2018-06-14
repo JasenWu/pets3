@@ -87,8 +87,8 @@ export default {
       //播放更新
       innerAudioContext.onTimeUpdate(res => {
         this.time = timeFormat(Math.floor(innerAudioContext.currentTime));
-        console.log("currentTime", innerAudioContext.currentTime);
-        console.log("duration", innerAudioContext.duration);
+        // console.log("currentTime", innerAudioContext.currentTime);
+        // console.log("duration", innerAudioContext.duration);
         var progress = parseInt(
           innerAudioContext.currentTime / innerAudioContext.duration * 100
         );
