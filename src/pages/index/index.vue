@@ -8,7 +8,7 @@
    <ul class="layout_unit_list_ul">
      <li v-for="(item,index) in unitList" :key="index">
           
-          <navigator :url="'/pages/play/main?unit='+item.order" hover-class="navigator-hover">Unit {{item.order}}&nbsp;{{item.title}}</navigator>
+          <navigator :url="'/pages/content-list/main?unit='+item.order" hover-class="navigator-hover">Unit {{item.order}}&nbsp;{{item.title}}</navigator>
       
      </li>
    </ul>
@@ -71,7 +71,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less" >
+<style scoped lang="less">
  
 .layout_title {
     font-size: 16px;
@@ -90,17 +90,22 @@ export default {
 .layout_des  .layout_des_parent{
   color:#18b4ed;
 }
-.layout_unit_list_ul{
-
-}
-.layout_unit_list_ul li {
+ 
+.layout_unit_list_ul  {
 
   color:#18b4ed;
+  li {
+      navigator{
+        display: block;
+        padding: 8px 0;
+        font-size: 16px;
+      }
+      
+     
+
+  } 
 } 
-.layout_unit_list_ul li navigator {
-    padding: 8px 0;
-    font-size: 16px;
-}
+ 
 .layout_bottom{
    position: fixed;
     

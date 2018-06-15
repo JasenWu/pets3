@@ -1,5 +1,5 @@
 <template>
-  <div id="loading" >
+  <div id="loading">
     <img src="http://www.renjie.net.cn/pets3/img/loading4.gif" />
     <br/>
     <span>loading...</span>
@@ -7,34 +7,27 @@
 </template>
 
 <script>
-import { assetsSrc } from   "../model/index";
- console.log('mounted',assetsSrc);//todo
+import { assetsSrc } from "../model/index";
+
 export default {
-  props:{
-    loading:{
-      type:Boolean,
-      default:true,
+  props: {
+    loading: {
+      type: Boolean,
+      default: true
     }
   },
-  data(){
+  data() {
     return {
-      assetsSrc:assetsSrc,//todo
-    }
+      assetsSrc: assetsSrc + "img/loading3.gif" //todo
+    };
   },
-  computed:{
-    ImgSrc(){
-      return assetsSrc + 'img/loading3.gif';
-    }
-  },
-  mounted(){
-   
-  }
-}
+  mounted() {},
+  created() {}
+};
 </script>
 
 <style>
 #loading {
- 
   position: fixed;
   left: 0;
   right: 0;
@@ -46,13 +39,10 @@ export default {
   padding-top: 50px;
   text-align: center;
 }
-#loading img{
-   
-  display:inline-block;
-text-align:center;
-width:20px;
-height:20px;
-
+#loading img {
+  display: inline-block;
+  text-align: center;
+  width: 20px;
+  height: 20px;
 }
-
 </style>

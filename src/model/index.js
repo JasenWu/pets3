@@ -149,8 +149,8 @@ export let unitList = {
       },
       7:{
         title:"Exercises B",
-        startTime:810,
-        endTime:"",
+        startTime:811,
+        endTime:1000,
         children:{}
       }
     }
@@ -320,7 +320,7 @@ export const audioSrc = "http://www.renjie.net.cn/pets3/audio/unit";
 
 export const author = "Jason";
 
-export const autoPlay = false;
+export const autoPlay = true;
 
 
  

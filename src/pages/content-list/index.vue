@@ -1,28 +1,27 @@
 <template>
   <div class="container">
     <div class="layout_title">Unit {{details.unit}} {{details.title}}</div>
-    <!-- player component -->
-    <c-audio v-if="initAudio" ref="audioEle" :playingItem="playingItem" :details="details" @canPlay="play"></c-audio>
-    <div>{{details.unit}} , order {{playingItem.order}}</div>
-    <!-- 章节内容 -->
-    <section v-if="initAudio && details.unit >0 && unitList[details.unit].children[playingItem.order] && unitList[details.unit].children[playingItem.order].content && playingItem.order">
-      <div class="layout_content">
-        <ul>
-          <li class="i_item" :class="{'layout_right':item.role == 2,'layout_left':item.role == 1,'layout_des':item.role == 0}" v-for="(item,index) in  unitList[details.unit].children[playingItem.order].content.contents" :key="item.startTime">
-            <b v-if="item.role != 0" class="i_name">{{unitList[details.unit].children[playingItem.order].content.roles[item.role].name}}</b>
-            <span class="i_text">{{item.text}}</span>
-            <span v-if="item.show_zh  == true" class="i_text">{{item.text_zh}}</span>
-          </li>
-        </ul>
-      </div>
-    </section>
-    <div v-else class="layout_tips">the content is writting...</div>
+
+    <!-- player style -->
+
+    <c-audio v-if="initAudio" ref="audioEle" :playingItem="playingItem" :details="details"></c-audio>
+    <ul class="layout_list_wrap" v-if="details.unit>0 && !playingItem.order ">
+      <li v-for="(item,index) in unitList[details.unit].children" :key="index">
+        <navigator :url="'/pages/play/main?unit=details.unit&contentOrder='+index" hover-class="navigator-hover">
+               {{item.title}}
+              <i class="icon alifont af-you"></i>
+        </navigator>
+       
+      </li>
+    </ul>
+
   </div>
 </template>
 
 <script>
 import { unitList } from "../../model/index";
 import Audio from "../../components/video"; //Audio播放组件
+ 
 
 export default {
   components: {
@@ -44,24 +43,12 @@ export default {
   },
 
   methods: {
-    play(innerAudioContext, audioInstance) {
-      setTimeout(() => {
-        console.log("innerAudioContext", innerAudioContext);
-
-        let order = this.$root.$mp.query.contentOrder;
-        console.log("order2", this.$root.$mp.query.contentOrder);
-        let item = unitList[this.details.unit].children[order];
-
-        this.playingItem = item;
-        this.playingItem.order = order;
-
-        innerAudioContext.play();
-        innerAudioContext.seek(item.startTime); //路转播放
-      }, 100);
-    }
+ 
+   
   },
 
   mounted() {
+ 
     // wx.request({
     //   url: "http://www.renjie.net.cn/pets3/data/index.js", //仅为示例，并非真实的接口地址
     //   data: {
@@ -80,15 +67,16 @@ export default {
     this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
     let unit = this.details.unit;
     this.details.title = unitList[unit].title;
-    this.initAudio = true;
- 
 
-    //用户退出页面
-    this.$mp.page.onUnload = () => {
-      console.log("退出页面");
-      this.$refs.audioEle.audioCtx.destroy(); //销毁音频实例
-      this.initAudio = false;
-    };
+    // this.initAudio = true;
+    // console.log("this", this.$mp.page.onLoad.toString());
+
+    // //用户退出页面
+    // this.$mp.page.onUnload = () => {
+    //   console.log("退出页面");
+    //   this.$refs.audioEle.audioCtx.destroy(); //销毁音频实例
+    //   this.initAudio = false;
+    // };
   }
 };
 </script>
@@ -139,11 +127,16 @@ export default {
   width: 100%;
   li {
     width: 100%;
-    line-height: 36px;
-    border-bottom: 1px solid #eee;
-    color: #18b4ed;
-    display: flex;
-    justify-content: space-between;
+   
+   
+    navigator{
+       color: #18b4ed;
+       display: flex;
+       justify-content: space-between;
+       line-height: 36px;
+       border-bottom: 1px solid #eee;
+    }
+   
   }
 }
 .layout_tips {
@@ -152,5 +145,15 @@ export default {
 
   border: 1px dotted #ccc;
 }
-
+.layout_navigation {
+  .icon {
+    font-size: 20px;
+  }
+  display: flex;
+  color: #303030;
+  font-size: 16px;
+  font-weight: normal;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
 </style>

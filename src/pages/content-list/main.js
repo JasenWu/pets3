@@ -7,7 +7,7 @@ const app = new Vue(App)
 app.$mount()
 export default {
   config: {
-    navigationBarTitleText: 'Pets3 details'
+    navigationBarTitleText: 'Pets3 list'
   },
  
   

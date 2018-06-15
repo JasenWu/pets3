@@ -24,8 +24,8 @@
  
 </template>
 <script>
-import {unitList, timeFormat, audioSrc, author, autoPlay } from "../../../model/index";
-import Loading from "../../../components/loading.vue";
+import {unitList, timeFormat, audioSrc, author, autoPlay } from "../model/index";
+import Loading from "./loading.vue";
 
 export default {
   components: {
@@ -46,16 +46,7 @@ export default {
       }
     }
   },
-  watch: {
-    details: {
-      handler: function(newVal, oldVal) {
-        if (newVal.unit) {
-          this.play();
-        }
-      },
-      deep: true
-    }
-  },
+ 
   data() {
     return {
       progress: 0,
@@ -82,6 +73,7 @@ export default {
  
       innerAudioContext.onPlay(() => {
         console.log("开始播放");
+       
       });
 
       //播放更新
@@ -108,6 +100,7 @@ export default {
         console.log("可以播放");
         this.playing = autoPlay;
         this.loading = false;
+        
       });
       //音频播放结束时
       innerAudioContext.onEnded(res => {
@@ -133,7 +126,9 @@ export default {
         console.log(res.errCode);
       });
 
-      this.audioCtx = innerAudioContext;
+        this.audioCtx = innerAudioContext;
+       this.$emit('canPlay',innerAudioContext,this);
+        
     },
     //开始播放
     togglePlay(state) {
@@ -146,15 +141,12 @@ export default {
         this.playing = true;
       }
     },
-    //开始播放
-    play() {
-      this.init();
-    }
+    
   },
 
   mounted() {
-    console.log('hei')
-    this.play();
+     
+    this.init();
   },
 
   beforeDestroy() {}
