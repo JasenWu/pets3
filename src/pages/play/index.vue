@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import { unitList } from "../../model/index";
-import Audio from "../../components/video"; //Audio播放组件
+import { unitList } from "@models/index";
+import Audio from "@components/video.vue"; //Audio播放组件
 
 export default {
   components: {

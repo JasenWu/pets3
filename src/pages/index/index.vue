@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { unitList } from "../../model/index";
+import { unitList } from "@models/index";
  
 
 

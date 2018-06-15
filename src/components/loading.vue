@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { assetsSrc } from "../model/index";
+import { assetsSrc } from "@models/index";
 
 export default {
   props: {

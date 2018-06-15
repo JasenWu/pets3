@@ -24,8 +24,8 @@
  
 </template>
 <script>
-import {unitList, timeFormat, audioSrc, author, autoPlay } from "../model/index";
-import Loading from "./loading.vue";
+import {unitList, timeFormat, audioSrc, author, autoPlay } from "@models/index";
+import Loading from "@components/loading.vue";
 
 export default {
   components: {
