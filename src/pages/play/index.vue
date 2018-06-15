@@ -2,8 +2,8 @@
   <div class="container">
     <div class="layout_title">Unit {{details.unit}} {{details.title}}</div>
     <!-- player component -->
-    <c-audio v-if="initAudio" ref="audioEle" :playingItem="playingItem" :details="details" @canPlay="play"></c-audio>
-    <div>{{details.unit}} , order {{playingItem.order}}</div>
+    <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details" @canPlay="play"></c-audio>
+     
     <!-- 章节内容 -->
     <section v-if="initAudio && details.unit >0 && unitList[details.unit].children[playingItem.order] && unitList[details.unit].children[playingItem.order].content && playingItem.order">
       <div class="layout_content">

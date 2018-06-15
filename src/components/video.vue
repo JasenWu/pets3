@@ -24,7 +24,7 @@
  
 </template>
 <script>
-import {unitList, timeFormat, audioSrc, author, autoPlay } from "@models/index";
+import {unitList, timeFormat, audioSrc, author } from "@models/index";
 import Loading from "@components/loading.vue";
 
 export default {
@@ -44,6 +44,10 @@ export default {
       default: {
         title: ""
       }
+    },
+    autoPlay:{
+      type: Boolean,
+      default: false,
     }
   },
  
@@ -67,7 +71,7 @@ export default {
       }
 
       const innerAudioContext = wx.createInnerAudioContext();
-      innerAudioContext.autoplay = autoPlay;
+      innerAudioContext.autoplay = this.autoPlay;
 
       innerAudioContext.src = `${this.audioSrc}${this.details.unit}.mp3`;
  
@@ -98,7 +102,7 @@ export default {
       //可以播放时
       innerAudioContext.onCanplay(res => {
         console.log("可以播放");
-        this.playing = autoPlay;
+        this.playing = this.autoPlay;
         this.loading = false;
         
       });

@@ -4,16 +4,16 @@
 
     <!-- player style -->
 
-    <c-audio v-if="initAudio" ref="audioEle" :playingItem="playingItem" :details="details"></c-audio>
+    <c-audio v-if="initAudio" ref="audioEle" :autoPlay="false" :playingItem="playingItem" :details="details"></c-audio>
     <ul class="layout_list_wrap" v-if="details.unit>0 && !playingItem.order ">
       <li v-for="(item,index) in unitList[details.unit].children" :key="index">
-        <navigator :url="'/pages/play/main?unit=details.unit&contentOrder='+index" hover-class="navigator-hover">
+        <a @tap="toDetails(index)"   hover-class="navigator-hover">
                {{item.title}}
               <i class="icon alifont af-you"></i>
-        </navigator>
-       
+        </a>
       </li>
     </ul>
+    <div v-else >ll</div>
 
   </div>
 </template>
@@ -43,6 +43,14 @@ export default {
   },
 
   methods: {
+    toDetails(index){
+      this.$refs.audioEle.audioCtx.pause(); //销毁音频实例
+      this.playing = false;
+      
+      wx.navigateTo({
+        url: '/pages/play/main?unit=details.unit&contentOrder='+index
+      })
+    }
  
    
   },
@@ -68,15 +76,15 @@ export default {
     let unit = this.details.unit;
     this.details.title = unitList[unit].title;
 
-    // this.initAudio = true;
-    // console.log("this", this.$mp.page.onLoad.toString());
+    this.initAudio = true;
+ 
 
-    // //用户退出页面
-    // this.$mp.page.onUnload = () => {
-    //   console.log("退出页面");
-    //   this.$refs.audioEle.audioCtx.destroy(); //销毁音频实例
-    //   this.initAudio = false;
-    // };
+    //用户退出页面
+    this.$mp.page.onUnload = () => {
+      console.log("退出页面");
+      this.$refs.audioEle.audioCtx.destroy(); //销毁音频实例
+      this.initAudio = false;
+    };
   }
 };
 </script>
@@ -129,7 +137,7 @@ export default {
     width: 100%;
    
    
-    navigator{
+    a{
        color: #18b4ed;
        display: flex;
        justify-content: space-between;
