@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div class="layout_title">Unit {{details.unit}} {{details.title}}</div>
+      <div class="layout_title">Unit {{details.unit}} {{details.title}}</div>
     <!-- player component -->
-    <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details" @canPlay="play"></c-audio>
-     
+    <c-audio v-if="initAudio" ref="audioEle"   :autoPlay="true" :playingItem="playingItem" :details="details" @canPlay="play"></c-audio>
+   
     <!-- 章节内容 -->
     <section v-if="initAudio && details.unit >0 && unitList[details.unit].children[playingItem.order] && unitList[details.unit].children[playingItem.order].content && playingItem.order">
       <div class="layout_content">
@@ -30,7 +30,7 @@ export default {
   },
   data() {
     return {
-      loading: false,
+       
       details: {
         title: "",
         unit: 0 //单元号,
@@ -39,6 +39,7 @@ export default {
       playingItem: {
         order: 0
       },
+       
       initAudio: false //控制audio组件的渲染
     };
   },
@@ -62,6 +63,7 @@ export default {
   },
 
   mounted() {
+    
     // wx.request({
     //   url: "http://www.renjie.net.cn/pets3/data/index.js", //仅为示例，并非真实的接口地址
     //   data: {
@@ -89,12 +91,17 @@ export default {
       this.$refs.audioEle.audioCtx.destroy(); //销毁音频实例
       this.initAudio = false;
     };
+    this.$mp.page.onPageScroll = (scroll)=>{
+       
+       
+    }
   }
 };
 </script>
 
 <style scoped lang="less">
 .layout_title {
+  
   font-size: 18px;
   padding-bottom: 10px;
 }
