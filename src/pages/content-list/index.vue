@@ -56,20 +56,7 @@ export default {
   },
 
   mounted() {
- 
-    // wx.request({
-    //   url: "http://www.renjie.net.cn/pets3/data/index.js", //仅为示例，并非真实的接口地址
-    //   data: {
-    //     x: "",
-    //     y: ""
-    //   },
-    //   header: {
-    //     "content-type": "application/json" // 默认值
-    //   },
-    //   success: function(res) {
-    //     console.log(res.data);
-    //   }
-    // });
+   
 
     // 调用应用实例的方法获取全局数据
     this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
