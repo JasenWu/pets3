@@ -1,6 +1,6 @@
 <template>
 <section>
-   <div class="audio_area" id="audioplayer">
+   <div  class="audio_area" id="audioplayer" >
     <div class="audio_wrp" id="music" preload="true">
       <div class="audio_play_area play " @tap="togglePlay(playing)" id="pButton ">
         <i class="icon_audio_default " v-show="!playing"></i>
@@ -48,7 +48,9 @@ export default {
     autoPlay:{
       type: Boolean,
       default: false,
-    }
+    },
+    
+ 
   },
  
   data() {
@@ -176,8 +178,9 @@ export default {
   }
 }
 
+ 
 .audio_area {
-  width: 100%;
+   width: 100%;
   display: inline-block;
   vertical-align: top;
   margin: 17px 1px 16px 0;
@@ -187,6 +190,22 @@ export default {
   text-decoration: none;
   -webkit-text-size-adjust: none;
 }
+// .audio_area-fix {
+//   position: fixed;
+//   left:15px;
+//   top:0px;
+//   right:15px;
+//   z-index: 0;
+
+//   display: inline-block;
+//   vertical-align: top;
+ 
+//   font-size: 0;
+ 
+//   font-weight: 400;
+//   text-decoration: none;
+//   -webkit-text-size-adjust: none;
+// }
 
 .audio_wrp {
   border: 1px solid #ebebeb;

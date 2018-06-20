@@ -48,7 +48,7 @@ export default {
       this.playing = false;
       
       wx.navigateTo({
-        url: '/pages/play/main?unit=details.unit&contentOrder='+index
+        url: '/pages/play/main?unit='+this.details.unit+'&contentOrder='+index
       })
     }
  
