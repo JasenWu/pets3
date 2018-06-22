@@ -6,14 +6,20 @@
         <i class="icon_audio_default " v-show="!playing"></i>
         <i class="icon_audio_playing " v-show="playing"></i>
       </div>
-      <div class="audio_length tips_global ">{{time}}</div>
-      <div class="audio_info_area ">
+      <div class="audio_length tips_global ">
+        {{time}}
+        <br />
+        {{duration}}
+
+      </div>
+      
+      <div class="audio_info_area">
         <strong class="audio_title ">{{details.title}}</strong>
         <div class="audio_source tips_global ">{{author}}</div>
       </div>
       <div id="timeline" class="progress_bar">
         <div id="playhead" :style="{'width':progress}">
-          <div class="i_drager"></div>
+          <div  @touchmove="touchmove" :style="{left:leftVal+'px'}" class="i_drager"></div>
         </div>
       </div>
     </div>
@@ -60,11 +66,40 @@ export default {
       audioCtx: null, //音频实例
       playing: false,
       time: "00:00",
+      duration:"00:00",
  
-      author: author
+      author: author,
+      leftVal:0,
     };
   },
   methods: {
+    touchmove(e){
+      let audioCtx = this.audioCtx;
+      audioCtx.pause();
+
+      let windowWidth = wx.getSystemInfoSync().windowWidth;
+      let min = 15;
+      let max = windowWidth - 30 - 8;
+      let val = 0;
+      if(e.clientX<=min){
+        val = 0;
+      }else if(e.clientX>=max){
+        val = max;
+      }else{
+        val = e.clientX;
+      }
+      this.leftVal = val;
+      let scale = val / (windowWidth - 30);
+      let process = scale * 100 + "%";
+      this.progress = process;
+     
+      
+       
+      let pos = audioCtx.duration * scale;
+      audioCtx.seek(pos)
+      
+       
+    },
     init() {
        //wx.showLoading(loadingConfig)
      
@@ -89,6 +124,7 @@ export default {
         this.time = timeFormat(Math.floor(innerAudioContext.currentTime));
         // console.log("currentTime", innerAudioContext.currentTime);
         // console.log("duration", innerAudioContext.duration);
+        this.duration = timeFormat(Math.floor(innerAudioContext.duration));
         var progress = parseInt(
           innerAudioContext.currentTime / innerAudioContext.duration * 100
         );
@@ -169,7 +205,7 @@ export default {
   background-color: #0cbb08;
   position: relative;
   .i_drager {
-    @size: 4px;
+    @size: 8px;
     position: absolute;
     width: @size;
     height: @size;
