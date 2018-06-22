@@ -8,7 +8,7 @@
     <ul class="layout_list_wrap" v-if="details.unit>0 && !playingItem.order ">
       <li v-for="(item,index) in unitList[details.unit].children" :key="index">
         <a @tap="toDetails(index)"   hover-class="navigator-hover">
-               {{item.title}}
+               {{index}}、{{item.title}}
               <i class="icon alifont af-you"></i>
         </a>
       </li>

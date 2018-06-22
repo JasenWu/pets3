@@ -8,24 +8,24 @@ export let unitList = {
     title:"Greeting and Introduction",
     children:{
       1:{
-        title:"Dialog 1",
+        title:"Dialog",
         startTime:0,
         endTime:189,
         
       },
       2:{
-        title:"Dialog 2",
+        title:"Dialog",
         startTime:190,
         endTime:321, 
       },
       3:{
-        title:"Dialog 3",
+        title:"Monologue",
         startTime:322,
         endTime:469,
          
       },
       4:{
-        title:"Dialog 4",
+        title:"Monologue",
         startTime:470,
         endTime:553,
        

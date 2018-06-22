@@ -9,9 +9,9 @@
       
       <div class="layout_content">
         <ul>
-          <li class="i_item" :class="{'layout_right':item.role == 2,'layout_left':item.role == 1,'layout_des':item.role == 0}" v-for="(item,index) in  contentData.contents" :key="item.startTime">
+          <li  class="i_item" :class="{'layout_right':item.role == 2,'layout_left':item.role == 1,'layout_des':item.role == 0}" v-for="(item,index) in  contentData.contents" @tap="toggleZh(item)" :key="item.startTime">
             <b v-if="item.role != 0" class="i_name">{{contentData.roles[item.role].name}}</b>
-            <span class="i_text">{{item.text}}</span>
+            <span  class="i_text">{{item.text}}</span>
             <span v-if="item.show_zh  == true" class="i_text">{{item.text_zh}}</span>
           </li>
         </ul>
@@ -52,10 +52,13 @@ export default {
   },
 
   methods: {
+    toggleZh(item){
+      console.log(item);
+      item.show_zh = !item.show_zh;
+      this.$forceUpdate()
+    },
     play(innerAudioContext, audioInstance) {
       setTimeout(() => {
-
-
         let order = this.$root.$mp.query.contentOrder;
 
         let item = unitList[this.details.unit].children[order];
@@ -81,7 +84,7 @@ export default {
      let order = this.$root.$mp.query.contentOrder;
      let title = unitList[unit].children[order].title;
      if(order){//在具体的dialog 
-        this.details.title = `Unit ${unit}  ${title}`;
+        this.details.title = `Unit ${unit}  ${title}-${order}`;
      }
 
      let __this = this;
