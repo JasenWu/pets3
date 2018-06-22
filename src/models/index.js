@@ -6,22 +6,17 @@ export let unitList = {
   1:{  
     order:1,
     title:"Greeting and Introduction",
-     
     children:{
       1:{
-        
         title:"Dialog 1",
         startTime:0,
         endTime:189,
-      
-
+        
       },
       2:{
-        
         title:"Dialog 2",
         startTime:190,
-        endTime:321,
-         
+        endTime:321, 
       },
       3:{
         title:"Dialog 3",
@@ -58,52 +53,7 @@ export let unitList = {
   2:{  
     order:2,
     title:"People",
-    children:{
-      1:{
-        
-        title:"Dialog 1",
-        startTime:0,
-        endTime:139,
-        
-      },
-      2:{
-        
-        title:"Dialog 2",
-        startTime:141,
-        endTime:230,
-        
-      },
-      3:{
-        title:"Dialog 3",
-        startTime:240,
-        endTime:469,
-         
-      },
-      4:{
-        title:"Dialog 4",
-        startTime:470,
-        endTime:553,
-       
-      },
-      5:{
-        title:"Passage",
-        startTime:554,
-        endTime:733,
-        
-      },
-      6:{
-        title:"Exercises A",
-        startTime:734,
-        endTime:810,
-        
-      },
-      7:{
-        title:"Exercises B",
-        startTime:811,
-        endTime:1000,
-        
-      }
-    }
+    children:[] 
   },
   3:{  
     order:3,
@@ -259,9 +209,9 @@ export const timeFormat = (timestamp) => {
   return minite + ":" + second;
 }
 
-export const assetsSrc = "http://www.renjie.net.cn/pets3/";
+export const assetsSrc = "https://www.renjie.net.cn/pets3/";
 //音频资源地址
-export const audioSrc = "http://www.renjie.net.cn/pets3/audio/unit";
+export const audioSrc = "https://www.renjie.net.cn/pets3/audio/unit";
 
 export const author = "Jason";
 

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-      <div class="layout_title">Unit {{details.unit}} {{details.title}}</div>
+      <!-- <div class="layout_title">Unit {{details.unit}} {{details.title}}</div> -->
     <!-- player component -->
     <c-audio v-if="initAudio" ref="audioEle"   :autoPlay="true" :playingItem="playingItem" :details="details" @canPlay="play"></c-audio>
    
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { unitList } from "@models/index";
+import { unitList,assetsSrc } from "@models/index";
 import Audio from "@components/video.vue"; //Audio播放组件
 
 export default {
@@ -31,7 +31,7 @@ export default {
   },
   data() {
     return {
-      loading: false, 
+  
       details: {
         title: "",
         unit: 0 //单元号,
@@ -54,10 +54,10 @@ export default {
   methods: {
     play(innerAudioContext, audioInstance) {
       setTimeout(() => {
-        console.log("innerAudioContext", innerAudioContext);
+
 
         let order = this.$root.$mp.query.contentOrder;
-        console.log("order2", this.$root.$mp.query.contentOrder);
+
         let item = unitList[this.details.unit].children[order];
 
         this.playingItem = item;
@@ -70,23 +70,7 @@ export default {
   },
 
   mounted() {
-  let __this = this;
-    wx.request({
-      url: "https://www.renjie.net.cn/pets3/contentData/unit1_children01.json", //仅为示例，并非真实的接口地址
-      data: {
-
-      },
-      header: {
-        "content-type": "application/json" // 默认值
-      },
-      success: function(res) {
-        let contentData =  res.data;
-        __this.contentData = contentData;
-        console.log('contentData',contentData)
-        
- 
-      }
-    });
+    
     
     
     // 调用应用实例的方法获取全局数据
@@ -99,6 +83,31 @@ export default {
      if(order){//在具体的dialog 
         this.details.title = `Unit ${unit}  ${title}`;
      }
+
+     let __this = this;
+    let textName = `unit${unit}_children${order}`;
+    wx.request({
+      url: `${assetsSrc}/contentData/${textName}.json`, //仅为示例，并非真实的接口地址
+      data: {
+
+      },
+      header: {
+        "content-type": "application/json" // 默认值
+      },
+      success: function(res) {
+        let contentData =  res.data;
+        __this.contentData = contentData;
+        console.log('contentData',contentData)
+        
+ 
+      },
+      fail(res){
+        console.log('fail',res);
+      }
+    });
+
+
+
     this.initAudio = true;
  
 

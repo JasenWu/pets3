@@ -29,7 +29,6 @@ export default {
   },
   data() {
     return {
-      loading: false,
       details: {
         title: "",
         unit: 0 //单元号,
