@@ -13,8 +13,7 @@ export let unitList = {
         title:"Dialog 1",
         startTime:0,
         endTime:189,
-        content:{
-        }
+      
 
       },
       2:{
