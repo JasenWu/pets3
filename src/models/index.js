@@ -12,16 +12,14 @@ export const timeFormat = (timestamp) => {
   var second = date.getSeconds().toString().padStart(2,'0');
   return minite + ":" + second;
 }
-
-export const assetsSrc = "https://www.renjie.net.cn/pets3";
-//音频资源地址
-export const audioSrc = "https://www.renjie.net.cn/pets3/audio/unit";
+//资源地址
+export const assetsSrc = "https://www.renjie.net.cn/pets3/";
 
 export const author = "Jason";
 
 export const autoPlay = true;
 
-export const loadingTip = {
+export const loadingConfig = {
   title:"加载中...",
   mask:true
 }

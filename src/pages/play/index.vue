@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { assetsSrc,loadingTip } from "@models/index";
+import { assetsSrc,loadingConfig } from "@models/index";
 import Audio from "@components/video.vue"; //Audio播放组件
 
 export default {
@@ -67,7 +67,7 @@ export default {
   },
 
   mounted() {
-    wx.showLoading(loadingTip)
+    wx.showLoading(loadingConfig)
     wx.request({
       url: `${assetsSrc}/contentData/unitList.json`, //仅为示例，并非真实的接口地址
       data: {},

@@ -24,7 +24,7 @@
 
 <script>
  
- import {assetsSrc,loadingTip} from "@models/index"
+ import {assetsSrc,loadingConfig} from "@models/index"
 
 
 export default {
@@ -64,7 +64,7 @@ export default {
   },
 
   mounted() {
-      wx.showLoading(loadingTip)
+      wx.showLoading(loadingConfig)
      wx.request({
       url: `${assetsSrc}/contentData/unitList.json`, //仅为示例，并非真实的接口地址
       data: {

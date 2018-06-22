@@ -24,7 +24,7 @@
  
 </template>
 <script>
-import {unitList, timeFormat, audioSrc, author,loadingTip } from "@models/index";
+import {unitList, timeFormat, assetsSrc, author,loadingConfig } from "@models/index";
  
 
 export default {
@@ -60,13 +60,13 @@ export default {
       audioCtx: null, //音频实例
       playing: false,
       time: "00:00",
-      audioSrc: audioSrc,
+ 
       author: author
     };
   },
   methods: {
     init() {
-       //wx.showLoading(loadingTip)
+       //wx.showLoading(loadingConfig)
      
       console.log('start playing')
       if (this.details.unit <= 0) {
@@ -77,7 +77,7 @@ export default {
       const innerAudioContext = wx.createInnerAudioContext();
       innerAudioContext.autoplay = this.autoPlay;
 
-      innerAudioContext.src = `${this.audioSrc}${this.details.unit}.mp3`;
+      innerAudioContext.src = `${assetsSrc}audio/unit${this.details.unit}.mp3`;
  
       innerAudioContext.onPlay(() => {
         console.log("开始播放");
