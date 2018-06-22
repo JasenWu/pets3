@@ -19,17 +19,17 @@
     </div>
  
   </div>
-   <loading v-if="loading"></loading>
+   
 </section>
  
 </template>
 <script>
-import {unitList, timeFormat, audioSrc, author } from "@models/index";
-import Loading from "@components/loading.vue";
+import {unitList, timeFormat, audioSrc, author,loadingTip } from "@models/index";
+ 
 
 export default {
   components: {
-    loading: Loading
+ 
   },
   props: {
     details: {
@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       progress: 0,
-      loading: true,
+     
       audioCtx: null, //音频实例
       playing: false,
       time: "00:00",
@@ -66,6 +66,8 @@ export default {
   },
   methods: {
     init() {
+       //wx.showLoading(loadingTip)
+     
       console.log('start playing')
       if (this.details.unit <= 0) {
         //非法参数，不播放
@@ -105,7 +107,7 @@ export default {
       innerAudioContext.onCanplay(res => {
         console.log("可以播放");
         this.playing = this.autoPlay;
-        this.loading = false;
+       
         
       });
       //音频播放结束时

@@ -22,7 +22,7 @@
 
 import Audio from "@components/video"; //Audio播放组件
  
-import {assetsSrc} from "@models/index"
+import {assetsSrc,loadingTip} from "@models/index"
 export default {
   components: {
     "c-audio": Audio
@@ -55,8 +55,8 @@ export default {
   },
 
   mounted() {
- 
-   
+    wx.showLoading(loadingTip)
+    
     wx.request({
       url: `${assetsSrc}/contentData/unitList.json`, //仅为示例，并非真实的接口地址
       data: {
@@ -75,6 +75,7 @@ export default {
         this.details.title = this.unitList[unit].title;
 
         this.initAudio = true;
+         wx.hideLoading()
         
  
       },

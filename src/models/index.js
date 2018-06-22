@@ -21,5 +21,10 @@ export const author = "Jason";
 
 export const autoPlay = true;
 
+export const loadingTip = {
+  title:"加载中...",
+  mask:true
+}
+
 
  
