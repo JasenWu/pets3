@@ -5,7 +5,7 @@
     <!-- player style -->
 
     <c-audio v-if="initAudio" ref="audioEle" :autoPlay="false" :playingItem="playingItem" :details="details"></c-audio>
-    <ul class="layout_list_wrap" v-if="details.unit>0 && !playingItem.order ">
+    <ul class="layout_list_wrap" v-if="initAudio">
       <li v-for="(item,index) in unitList[details.unit].children" :key="index">
         <a @tap="toDetails(index)"   hover-class="navigator-hover">
                {{index}}、{{item.title}}
@@ -73,7 +73,9 @@ export default {
         this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
         let unit = this.details.unit;
         this.details.title = this.unitList[unit].title;
+        let item = this.unitList[this.details.unit];
 
+        this.playingItem = item;
         this.initAudio = true;
          wx.hideLoading()
         

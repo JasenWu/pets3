@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { assetsSrc,loadingConfig } from "@models/index";
+import { assetsSrc, loadingConfig } from "@models/index";
 import Audio from "@components/video.vue"; //Audio播放组件
 
 export default {
@@ -53,21 +53,14 @@ export default {
     },
     play(innerAudioContext, audioInstance) {
       setTimeout(() => {
-        let order = this.$root.$mp.query.contentOrder;
-
-        let item = this.unitList[this.details.unit].children[order];
-
-        this.playingItem = item;
-        this.playingItem.order = order;
-
         innerAudioContext.play();
-        innerAudioContext.seek(item.startTime); //路转播放
+        // innerAudioContext.seek(item.startTime); //路转播放
       }, 100);
     }
   },
 
   mounted() {
-    wx.showLoading(loadingConfig)
+    wx.showLoading(loadingConfig);
     wx.request({
       url: `${assetsSrc}/contentData/unitList.json`, //仅为示例，并非真实的接口地址
       data: {},
@@ -100,20 +93,26 @@ export default {
             let contentData = res.data;
             this.contentData = contentData;
             console.log("contentData", contentData);
-             this.initAudio = true;
-              wx.hideLoading()
+
+            let order = this.$root.$mp.query.contentOrder;
+
+            let item = this.unitList[this.details.unit].children[order];
+
+            this.playingItem = item;
+            this.playingItem.order = order;
+           
+            this.initAudio = true;
+            wx.hideLoading();
           },
           fail(res) {
             console.log("fail", res);
-             wx.hideLoading()
+            wx.hideLoading();
           }
         });
-
-       
       },
       fail(res) {
         console.log("fail", res);
-         wx.hideLoading()
+        wx.hideLoading();
       }
     });
 

@@ -6,16 +6,14 @@
         <i class="icon_audio_default " v-show="!playing"></i>
         <i class="icon_audio_playing " v-show="playing"></i>
       </div>
-      <div class="audio_length tips_global ">
-        {{time}}
-        <br />
-        {{duration}}
 
-      </div>
-      
       <div class="audio_info_area">
         <strong class="audio_title ">{{details.title}}</strong>
-        <div class="audio_source tips_global ">{{author}}</div>
+        <div class="audio_source tips_global ">
+          {{time}}
+          &nbsp;&nbsp;/&nbsp;&nbsp;
+           {{duration}}
+        </div>
       </div>
       <div id="timeline" class="progress_bar">
         <div id="playhead" :style="{'width':progress}">
@@ -30,7 +28,7 @@
  
 </template>
 <script>
-import {unitList, timeFormat, assetsSrc, author,loadingConfig } from "@models/index";
+import {unitList, timeFormat, assetsSrc,loadingConfig } from "@models/index";
  
 
 export default {
@@ -67,8 +65,6 @@ export default {
       playing: false,
       time: "00:00",
       duration:"00:00",
- 
-      author: author,
       leftVal:0,
     };
   },
@@ -111,11 +107,19 @@ export default {
 
       const innerAudioContext = wx.createInnerAudioContext();
       innerAudioContext.autoplay = this.autoPlay;
+      let playingItem = this.playingItem;
+      console.log('playingItem',playingItem);
 
-      innerAudioContext.src = `${assetsSrc}audio/unit${this.details.unit}.mp3`;
+      if(playingItem.audioName){//有音频资源地址
+          innerAudioContext.src = `${assetsSrc}audio/${this.playingItem.audioName}`;
+      }else{
+          innerAudioContext.src = `${assetsSrc}audio/unit${this.details.unit}.mp3`;
+      }
+      
  
       innerAudioContext.onPlay(() => {
         console.log("开始播放");
+         
        
       });
 
@@ -124,11 +128,13 @@ export default {
         this.time = timeFormat(Math.floor(innerAudioContext.currentTime));
         // console.log("currentTime", innerAudioContext.currentTime);
         // console.log("duration", innerAudioContext.duration);
-        this.duration = timeFormat(Math.floor(innerAudioContext.duration));
+       
+      
         var progress = parseInt(
           innerAudioContext.currentTime / innerAudioContext.duration * 100
         );
         this.progress = progress + "%";
+         this.duration = timeFormat(Math.floor(innerAudioContext.duration));
 
         if (
           this.playingItem &&
@@ -143,6 +149,7 @@ export default {
       innerAudioContext.onCanplay(res => {
         console.log("可以播放");
         this.playing = this.autoPlay;
+         
        
         
       });
