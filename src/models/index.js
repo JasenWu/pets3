@@ -35,18 +35,6 @@ export let unitList = {
         startTime:554,
         endTime:733,
        
-      },
-      6:{
-        title:"Exercises A",
-        startTime:734,
-        endTime:810,
-       
-      },
-      7:{
-        title:"Exercises B",
-        startTime:811,
-        endTime:1000,
-       
       }
     }
   },
@@ -209,7 +197,7 @@ export const timeFormat = (timestamp) => {
   return minite + ":" + second;
 }
 
-export const assetsSrc = "https://www.renjie.net.cn/pets3/";
+export const assetsSrc = "https://www.renjie.net.cn/pets3";
 //音频资源地址
 export const audioSrc = "https://www.renjie.net.cn/pets3/audio/unit";
 

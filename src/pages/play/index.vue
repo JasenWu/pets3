@@ -1,9 +1,6 @@
 <template>
   <div class="container">
-      <!-- <div class="layout_title">Unit {{details.unit}} {{details.title}}</div> -->
-    <!-- player component -->
     <c-audio v-if="initAudio" ref="audioEle"   :autoPlay="true" :playingItem="playingItem" :details="details" @canPlay="play"></c-audio>
-   
     <!-- 章节内容 -->
     <section v-if="initAudio && details.unit >0 && playingItem.order">
       
@@ -74,8 +71,7 @@ export default {
 
   mounted() {
     
-    
-    
+
     // 调用应用实例的方法获取全局数据
     this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
     let unit = this.details.unit;
@@ -87,7 +83,7 @@ export default {
         this.details.title = `Unit ${unit}  ${title}-${order}`;
      }
 
-     let __this = this;
+   
     let textName = `unit${unit}_children${order}`;
     wx.request({
       url: `${assetsSrc}/contentData/${textName}.json`, //仅为示例，并非真实的接口地址
@@ -97,9 +93,9 @@ export default {
       header: {
         "content-type": "application/json" // 默认值
       },
-      success: function(res) {
+      success: (res)=> {
         let contentData =  res.data;
-        __this.contentData = contentData;
+        this.contentData = contentData;
         console.log('contentData',contentData)
         
  

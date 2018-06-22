@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import { unitList } from "@models/index";
+
 import Audio from "@components/video"; //Audio播放组件
  
-
+import {assetsSrc} from "@models/index"
 export default {
   components: {
     "c-audio": Audio
@@ -33,7 +33,7 @@ export default {
         title: "",
         unit: 0 //单元号,
       },
-      unitList: unitList,
+      unitList: {},
       playingItem: {
         order: 0
       },
@@ -55,16 +55,34 @@ export default {
   },
 
   mounted() {
-   
-
-    // 调用应用实例的方法获取全局数据
-    this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
-    let unit = this.details.unit;
-    this.details.title = unitList[unit].title;
-
-    this.initAudio = true;
  
+   
+    wx.request({
+      url: `${assetsSrc}/contentData/unitList.json`, //仅为示例，并非真实的接口地址
+      data: {
 
+      },
+      header: {
+        "content-type": "application/json" // 默认值
+      },
+      success: (res)=> {
+        let unitList =  res.data;
+        this.unitList = unitList;
+  
+         // 调用应用实例的方法获取全局数据
+        this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
+        let unit = this.details.unit;
+        this.details.title = this.unitList[unit].title;
+
+        this.initAudio = true;
+        
+ 
+      },
+      fail(res){
+        console.log('fail',res);
+      }
+    });
+ 
     //用户退出页面
     this.$mp.page.onUnload = () => {
       console.log("退出页面");
