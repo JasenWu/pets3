@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import { unitList } from "@models/index";
  
+ import {assetsSrc} from "@models/index"
 
 
 export default {
@@ -33,7 +33,7 @@ export default {
     return {
       motto: "Hello World",
       userInfo: {},
-      unitList: unitList
+      unitList: {}
     };
   },
 
@@ -64,24 +64,26 @@ export default {
   },
 
   mounted() {
-    // wx.request({
-    //   url: "https://www.renjie.net.cn/pets3/data/index.json", //仅为示例，并非真实的接口地址
-    //   data: {
-    //     x: "",
-    //     y: ""
-    //   },
-    //   header: {
-    //     "content-type": "application/json" // 默认值
-    //   },
-    //   success: function(res) {
-    //     let str =  res.data;
-    //     let obj = str;
-    //     console.log('es.data',obj.order);
-    //   }
-    // });
-   
-    // 调用应用实例的方法获取全局数据
-    //this.getUserInfo();
+     wx.request({
+      url: `${assetsSrc}/contentData/unitList.json`, //仅为示例，并非真实的接口地址
+      data: {
+
+      },
+      header: {
+        "content-type": "application/json" // 默认值
+      },
+      success: (res)=> {
+        let unitList =  res.data;
+        this.unitList = unitList;
+ 
+        
+ 
+      },
+      fail(res){
+        console.log('fail',res);
+      }
+    });
+    
   }
 };
 </script>

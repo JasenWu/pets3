@@ -1,14 +1,14 @@
 <template>
   <div class="container">
-    <c-audio v-if="initAudio" ref="audioEle"   :autoPlay="true" :playingItem="playingItem" :details="details" @canPlay="play"></c-audio>
+    <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details" @canPlay="play"></c-audio>
     <!-- 章节内容 -->
     <section v-if="initAudio && details.unit >0 && playingItem.order">
-      
+
       <div class="layout_content">
         <ul>
-          <li  class="i_item" :class="{'layout_right':item.role == 2,'layout_left':item.role == 1,'layout_des':item.role == 0}" v-for="(item,index) in  contentData.contents" @tap="toggleZh(item)" :key="item.startTime">
+          <li class="i_item" :class="{'layout_right':item.role == 2,'layout_left':item.role == 1,'layout_des':item.role == 0}" v-for="(item,index) in  contentData.contents" @tap="toggleZh(item)" :key="item.startTime">
             <b v-if="item.role != 0" class="i_name">{{contentData.roles[item.role].name}}</b>
-            <span  class="i_text">{{item.text}}</span>
+            <span class="i_text">{{item.text}}</span>
             <span v-if="item.show_zh  == true" class="i_text">{{item.text_zh}}</span>
           </li>
         </ul>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { unitList,assetsSrc } from "@models/index";
+import { assetsSrc } from "@models/index";
 import Audio from "@components/video.vue"; //Audio播放组件
 
 export default {
@@ -28,37 +28,34 @@ export default {
   },
   data() {
     return {
-  
       details: {
         title: "",
         unit: 0 //单元号,
       },
-      unitList: unitList,
+      unitList: {},
       playingItem: {
         order: 0
       },
-       
-      initAudio: false, //控制audio组件的渲染
-      contentData:{
-        contents:[],
-        roles:{
 
-        }
-      },
+      initAudio: false, //控制audio组件的渲染
+      contentData: {
+        contents: [],
+        roles: {}
+      }
     };
   },
 
   methods: {
-    toggleZh(item){
+    toggleZh(item) {
       console.log(item);
       item.show_zh = !item.show_zh;
-      this.$forceUpdate()
+      this.$forceUpdate();
     },
     play(innerAudioContext, audioInstance) {
       setTimeout(() => {
         let order = this.$root.$mp.query.contentOrder;
 
-        let item = unitList[this.details.unit].children[order];
+        let item = this.unitList[this.details.unit].children[order];
 
         this.playingItem = item;
         this.playingItem.order = order;
@@ -70,45 +67,51 @@ export default {
   },
 
   mounted() {
-    
-
-    // 调用应用实例的方法获取全局数据
-    this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
-    let unit = this.details.unit;
-    
-
-     let order = this.$root.$mp.query.contentOrder;
-     let title = unitList[unit].children[order].title;
-     if(order){//在具体的dialog 
-        this.details.title = `Unit ${unit}  ${title}-${order}`;
-     }
-
-   
-    let textName = `unit${unit}_children${order}`;
     wx.request({
-      url: `${assetsSrc}/contentData/${textName}.json`, //仅为示例，并非真实的接口地址
-      data: {
-
-      },
+      url: `${assetsSrc}/contentData/unitList.json`, //仅为示例，并非真实的接口地址
+      data: {},
       header: {
         "content-type": "application/json" // 默认值
       },
-      success: (res)=> {
-        let contentData =  res.data;
-        this.contentData = contentData;
-        console.log('contentData',contentData)
-        
- 
+      success: res => {
+        let unitList = res.data;
+        this.unitList = unitList;
+
+        // 调用应用实例的方法获取全局数据
+        this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
+        let unit = this.details.unit;
+
+        let order = this.$root.$mp.query.contentOrder;
+        let title = this.unitList[unit].children[order].title;
+        if (order) {
+          //在具体的dialog
+          this.details.title = `Unit ${unit}  ${title}-${order}`;
+        }
+
+        let textName = `unit${unit}_children${order}`;
+        wx.request({
+          url: `${assetsSrc}/contentData/${textName}.json`, //仅为示例，并非真实的接口地址
+          data: {},
+          header: {
+            "content-type": "application/json" // 默认值
+          },
+          success: res => {
+            let contentData = res.data;
+            this.contentData = contentData;
+            console.log("contentData", contentData);
+             this.initAudio = true;
+          },
+          fail(res) {
+            console.log("fail", res);
+          }
+        });
+
+       
       },
-      fail(res){
-        console.log('fail',res);
+      fail(res) {
+        console.log("fail", res);
       }
     });
-
-
-
-    this.initAudio = true;
- 
 
     //用户退出页面
     this.$mp.page.onUnload = () => {
@@ -116,17 +119,13 @@ export default {
       this.$refs.audioEle.audioCtx.destroy(); //销毁音频实例
       this.initAudio = false;
     };
-    this.$mp.page.onPageScroll = (scroll)=>{
-       
-       
-    }
+    this.$mp.page.onPageScroll = scroll => {};
   }
 };
 </script>
 
 <style scoped lang="less">
 .layout_title {
-  
   font-size: 18px;
   padding-bottom: 10px;
 }
@@ -184,5 +183,4 @@ export default {
 
   border: 1px dotted #ccc;
 }
-
 </style>
