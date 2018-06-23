@@ -66,7 +66,7 @@ export default {
   mounted() {
       wx.showLoading(loadingConfig)
      wx.request({
-      url: `${assetsSrc}/contentData/unitList.json`, //仅为示例，并非真实的接口地址
+      url: `${assetsSrc}contentData/unitList.json`, //仅为示例，并非真实的接口地址
       data: {
 
       },
