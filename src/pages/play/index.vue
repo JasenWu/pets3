@@ -92,7 +92,7 @@ export default {
           success: res => {
             let contentData = res.data;
             this.contentData = contentData;
-            console.log("contentData", contentData);
+         
 
             let order = this.$root.$mp.query.contentOrder;
 
@@ -104,13 +104,14 @@ export default {
             this.initAudio = true;
             wx.hideLoading();
           },
-          fail(res) {
+          fail:(res)=> {
             console.log("fail", res);
             wx.hideLoading();
+            this.initAudio = true;
           }
         });
       },
-      fail(res) {
+      fail:(res)=> {
         console.log("fail", res);
         wx.hideLoading();
       }

@@ -8,8 +8,10 @@ export const timeFormat = (timestamp) => {
   var month = date.getMonth() + 1;
   var day = date.getDate();
   var hour = date.getHours();
-  var minite = date.getMinutes().toString().padStart(2,'0');
-  var second = date.getSeconds().toString().padStart(2,'0');
+  var minite = date.getMinutes().toString();
+  minite = minite.length === 1 ? '0' + minite :minite;
+  var second = date.getSeconds().toString();
+  second = second.length === 1 ? '0' + second : second;
   return minite + ":" + second;
 }
 //资源地址

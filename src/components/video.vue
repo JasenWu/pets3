@@ -17,7 +17,7 @@
       </div>
       <div id="timeline" class="progress_bar">
         <div id="playhead" :style="{'width':progress}">
-          <div  @touchmove="touchmove" :style="{left:leftVal+'px'}" class="i_drager"></div>
+          <div @touchstart="touchstart"  @touchmove="touchmove" @touchend="touchend" :style="{left:leftVal+'px'}" class="i_drager"></div>
         </div>
       </div>
     </div>
@@ -53,6 +53,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    dragging:false,//是否正在拖拽
     
  
   },
@@ -69,14 +70,28 @@ export default {
     };
   },
   methods: {
-    touchmove(e){
+    touchend(e){
+      let audioCtx = this.audioCtx;
+      let windowWidth = wx.getSystemInfoSync().windowWidth;
+      let scale = this.leftVal / (windowWidth - 30);
+      let pos = audioCtx.duration * scale;
+      audioCtx.seek(pos);
+      this.dragging = false;
+      this.playing = true;
+    },
+    touchstart(e){
       let audioCtx = this.audioCtx;
       audioCtx.pause();
-
+      this.dragging = true;
+      this.playing = false;
+    },
+    touchmove(e){
+      
       let windowWidth = wx.getSystemInfoSync().windowWidth;
       let min = 15;
       let max = windowWidth - 30 - 8;
       let val = 0;
+
       if(e.clientX<=min){
         val = 0;
       }else if(e.clientX>=max){
@@ -88,18 +103,8 @@ export default {
       let scale = val / (windowWidth - 30);
       let process = scale * 100 + "%";
       this.progress = process;
-     
-      
-       
-      let pos = audioCtx.duration * scale;
-      audioCtx.seek(pos)
-      
-       
     },
     init() {
-       //wx.showLoading(loadingConfig)
-     
-      console.log('start playing')
       if (this.details.unit <= 0) {
         //非法参数，不播放
         return; //非法参数，不播放
@@ -111,12 +116,12 @@ export default {
       console.log('playingItem',playingItem);
 
       if(playingItem.audioName){//有音频资源地址
-          innerAudioContext.src = `${assetsSrc}audio/${this.playingItem.audioName}`;
+          let name = `unit${this.details.unit}_${this.playingItem.order}.mp4`;
+          innerAudioContext.src = `${assetsSrc}audio/${name}`;
       }else{
           innerAudioContext.src = `${assetsSrc}audio/unit${this.details.unit}.mp3`;
       }
-      
- 
+
       innerAudioContext.onPlay(() => {
         console.log("开始播放");
          
@@ -125,16 +130,29 @@ export default {
 
       //播放更新
       innerAudioContext.onTimeUpdate(res => {
+
+        if(this.dragging){
+          console.log("正在拖拽时不再更新");
+          return;//正在拖拽时不再更新
+        } 
+
         this.time = timeFormat(Math.floor(innerAudioContext.currentTime));
         // console.log("currentTime", innerAudioContext.currentTime);
         // console.log("duration", innerAudioContext.duration);
        
-      
+        this.duration = timeFormat(Math.floor(innerAudioContext.duration));
         var progress = parseInt(
           innerAudioContext.currentTime / innerAudioContext.duration * 100
         );
+        
+        //更新进度条
         this.progress = progress + "%";
-         this.duration = timeFormat(Math.floor(innerAudioContext.duration));
+         
+
+         //更新drager
+        let windowWidth = wx.getSystemInfoSync().windowWidth;
+        this.leftVal = progress /100  *  (windowWidth - 30);
+      
 
         if (
           this.playingItem &&
@@ -212,11 +230,11 @@ export default {
   background-color: #0cbb08;
   position: relative;
   .i_drager {
-    @size: 8px;
+    @size: 16px;
     position: absolute;
     width: @size;
     height: @size;
-    right: -@size / 2;
+    margin-right: -@size / 2;
     top: -@size / 2;
     border-radius: @size / 2;
     background: red;
