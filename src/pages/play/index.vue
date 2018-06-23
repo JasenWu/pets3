@@ -2,7 +2,7 @@
   <div class="container">
     <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details" @canPlay="play"></c-audio>
     <!-- 章节内容 -->
-    <section v-if="initAudio && details.unit >0 && playingItem.order">
+    <section v-if="initAudio && contentData.contents">
 
       <div class="layout_content">
         <ul>
@@ -14,7 +14,12 @@
         </ul>
       </div>
     </section>
-    <div v-else class="layout_tips">the content is writting...</div>
+    <div v-else class="layout_tips">
+      the content is writting...<br />
+      if you want to help me ,please email to me ! <br />
+      Email:447124329@qq.com<br />
+      author:Jason.Wu
+      </div>
   </div>
 </template>
 
@@ -92,7 +97,6 @@ export default {
           success: res => {
             let contentData = res.data;
             this.contentData = contentData;
-         
 
             let order = this.$root.$mp.query.contentOrder;
 
@@ -107,7 +111,7 @@ export default {
           fail:(res)=> {
             console.log("fail", res);
             wx.hideLoading();
-            this.initAudio = true;
+           
           }
         });
       },
@@ -184,6 +188,7 @@ export default {
 .layout_tips {
   padding-top: 15px;
   padding-bottom: 15px;
+  text-align: center;
 
   border: 1px dotted #ccc;
 }

@@ -3,8 +3,8 @@
    <div  class="audio_area" id="audioplayer" >
     <div class="audio_wrp" id="music" preload="true">
       <div class="audio_play_area play " @tap="togglePlay(playing)" id="pButton ">
-        <i class="icon_audio_default " v-show="!playing"></i>
-        <i class="icon_audio_playing " v-show="playing"></i>
+        <i class="icon_audio_default " v-if="!playing"></i>
+        <i class="icon_audio_playing " v-else></i>
       </div>
 
       <div class="audio_info_area">
@@ -130,8 +130,8 @@ export default {
 
       //播放更新
       innerAudioContext.onTimeUpdate(res => {
-
-        if(this.dragging){
+         console.log("播放更新");
+        if(this.dragging === true){
           console.log("正在拖拽时不再更新");
           return;//正在拖拽时不再更新
         } 
@@ -167,6 +167,14 @@ export default {
       innerAudioContext.onCanplay(res => {
         console.log("可以播放");
         this.playing = this.autoPlay;
+         wx.hideLoading()
+ 
+      });
+
+      innerAudioContext.onWaiting(res => {
+        console.log("onWaiting");
+         wx.showLoading(loadingConfig)
+        this.playing = false;
          
        
         

@@ -74,16 +74,19 @@ export default {
         "content-type": "application/json" // 默认值
       },
       success: (res)=> {
+        console.log('res',res);
+
         let unitList =  res.data;
         this.unitList = unitList;
         wx.hideLoading()
  
-        
- 
       },
-      fail(res){
+      fail:(res)=>{
         console.log('fail',res);
-      }
+      },
+      complete:(res)=>{
+        console.log('complete',res);
+      },
     });
     
   }
