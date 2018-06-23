@@ -2,6 +2,7 @@
   <div class="container">
    <div class="layout_title">全国英语等级考试标准教程（全新版）第三级</div>
  
+ 
   <div class="layout_des">
     <span class="layout_des_belong">所属图书:</span><span class="layout_des_parent">全国英语等级考试标准教程（全新版）第三级</span>
   </div>
@@ -44,19 +45,11 @@ export default {
       const url = "../logs/main";
       wx.navigateTo({ url });
     },
-    //获取用户信息
-    getUserInfo() {
-      // 调用登录接口
-      wx.login({
-        success: () => {
-          wx.getUserInfo({
-            success: res => {
-              this.userInfo = res.userInfo;
-            }
-          });
-        }
-      });
+    onGotUserInfo(info){
+      alert(info);
+       console.log('userinfo');
     },
+     
     //点击事件
     clickHandle(msg, ev) {
       console.log("clickHandle:", msg, ev);
@@ -65,6 +58,7 @@ export default {
 
   mounted() {
       wx.showLoading(loadingConfig)
+    
      wx.request({
       url: `${assetsSrc}contentData/unitList.json`, //仅为示例，并非真实的接口地址
       data: {
