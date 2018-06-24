@@ -73,8 +73,10 @@ export default {
         "content-type": "application/json" // 默认值
       },
       success: res => {
+        wx.hideLoading();
         let unitList = res.data;
         this.unitList = unitList;
+         
 
         // 调用应用实例的方法获取全局数据
         this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
@@ -104,9 +106,9 @@ export default {
 
             this.playingItem = item;
             this.playingItem.order = order;
-           
+           wx.hideLoading();
             this.initAudio = true;
-            wx.hideLoading();
+            
           },
           fail:(res)=> {
             console.log("fail", res);
