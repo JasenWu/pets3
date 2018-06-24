@@ -28,7 +28,7 @@
  
 </template>
 <script>
-import {unitList, timeFormat, assetsSrc,loadingConfig } from "@models/index";
+import {unitList, timeFormat, assetsSrc } from "@models/index";
  
 
 export default {
@@ -167,13 +167,13 @@ export default {
       innerAudioContext.onCanplay(res => {
         console.log("可以播放");
         this.playing = this.autoPlay;
-         wx.hideLoading()
+         
  
       });
 
       innerAudioContext.onWaiting(res => {
         console.log("onWaiting");
-         wx.showLoading(loadingConfig)
+         
         this.playing = false;
          
        
