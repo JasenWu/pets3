@@ -69,7 +69,10 @@ export default {
       },
       success: (res)=> {
         console.log('res',res);
-
+        if(!res.data){
+          console.log('无数据退出');
+          
+        }
         let unitList =  res.data;
         this.unitList = unitList;
         wx.hideLoading()
