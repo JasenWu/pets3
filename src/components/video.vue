@@ -215,6 +215,8 @@ export default {
 
 .audio_area {
   #timeline {
+    width: 95%;
+    
     .i_drager {
       left: 0%;
       @size: 16px;
