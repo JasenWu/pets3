@@ -1,40 +1,36 @@
 <template>
-<section>
-   <div  class="audio_area" id="audioplayer" >
-    <div class="audio_wrp" id="music" preload="true">
-      <div class="audio_play_area play " @tap="togglePlay(playing)">
-        <i class="icon_audio_default " v-if="!playing"></i>
-        <i class="icon_audio_playing " v-else></i>
+  <section>
+    <div class="audio_area" id="audioplayer">
+      <div class="audio_wrp" id="music" preload="true">
+        <div class="audio_play_area play " @tap="togglePlay(playing)">
+          <i class="icon_audio_default " v-if="!playing"></i>
+          <i class="icon_audio_playing " v-else></i>
+        </div>
+
+        <div class="audio_info_area">
+          <strong class="audio_title ">{{details.title}}</strong>
+          <div class="audio_source tips_global ">
+            {{time}} &nbsp;&nbsp;/&nbsp;&nbsp; {{duration}}
+          </div>
+        </div>
+        <div id="timeline" class="progress_bar">
+          <div class="playhead" :style="{'width':progress}">
+
+          </div>
+          <div @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend" :style="{left:leftVal+'%'}" class="i_drager"></div>
+        </div>
       </div>
 
-      <div class="audio_info_area">
-        <strong class="audio_title ">{{details.title}}</strong>
-        <div class="audio_source tips_global ">
-          {{time}}
-          &nbsp;&nbsp;/&nbsp;&nbsp;
-           {{duration}}
-        </div>
-      </div>
-      <div id="timeline" class="progress_bar">
-        <div id="playhead" :style="{'width':progress}">
-          <div @touchstart="touchstart"  @touchmove="touchmove" @touchend="touchend" :style="{left:leftVal+'px'}" class="i_drager"></div>
-        </div>
-      </div>
     </div>
- 
-  </div>
-   
-</section>
- 
+
+  </section>
+
 </template>
 <script>
-import {unitList, timeFormat, assetsSrc } from "@models/index";
- 
+import { unitList, timeFormat, assetsSrc } from "@models/index";
 
 export default {
-  components: {
- 
-  },
+  components: {},
   props: {
     details: {
       type: Object,
@@ -49,59 +45,55 @@ export default {
         title: ""
       }
     },
-    autoPlay:{
+    autoPlay: {
       type: Boolean,
-      default: false,
+      default: false
     },
-    dragging:false,//是否正在拖拽
-    
- 
+    dragging: false //是否正在拖拽
   },
- 
+
   data() {
     return {
       progress: 0,
       audioCtx: null, //音频实例
       playing: false,
       time: "00:00",
-      duration:"00:00",
-      leftVal:0,
+      duration: "00:00",
+      leftVal: 0
     };
   },
   methods: {
-    touchend(e){
+    touchend(e) {
       let audioCtx = this.audioCtx;
       let windowWidth = wx.getSystemInfoSync().windowWidth;
-      let scale = this.leftVal / (windowWidth - 30);
-      let pos = audioCtx.duration * scale;
+    
+      let pos = audioCtx.duration * this.leftVal / 100;
       audioCtx.seek(pos);
       this.dragging = false;
       this.playing = true;
     },
-    touchstart(e){
+    touchstart(e) {
       let audioCtx = this.audioCtx;
       audioCtx.pause();
       this.dragging = true;
       this.playing = false;
     },
-    touchmove(e){
-      
+    touchmove(e) {
       let windowWidth = wx.getSystemInfoSync().windowWidth;
       let min = 15;
-      let max = windowWidth - 30 - 8;
+      let max = windowWidth - 15;
       let val = 0;
 
-      if(e.clientX<=min){
+      if (e.clientX <= min) {
         val = 0;
-      }else if(e.clientX>=max){
-        val = max;
-      }else{
-        val = e.clientX;
+      } else if (e.clientX >= max) {
+        val = 100;
+      } else {
+        val = (e.clientX - 15) / (windowWidth - 30) * 100;
       }
       this.leftVal = val;
-      let scale = val / (windowWidth - 30);
-      let process = scale * 100 + "%";
-      this.progress = process;
+      let progress = val + "%";
+      this.progress = progress;
     },
     init() {
       if (this.details.unit <= 0) {
@@ -112,46 +104,45 @@ export default {
       const innerAudioContext = wx.createInnerAudioContext();
       innerAudioContext.autoplay = this.autoPlay;
       let playingItem = this.playingItem;
-      console.log('playingItem',playingItem);
+      console.log("playingItem", playingItem);
 
-      if(playingItem.audioName){//有音频资源地址
-          let name = `unit${this.details.unit}_${this.playingItem.order}.mp4`;
-          innerAudioContext.src = `${assetsSrc}audio/${name}`;
-      }else{
-          innerAudioContext.src = `${assetsSrc}audio/unit${this.details.unit}.mp3`;
+      if (playingItem.audioName) {
+        //有音频资源地址
+        let name = `unit${this.details.unit}_${this.playingItem.order}.mp4`;
+        innerAudioContext.src = `${assetsSrc}audio/${name}`;
+      } else {
+        innerAudioContext.src = `${assetsSrc}audio/unit${
+          this.details.unit
+        }.mp3`;
       }
 
       innerAudioContext.onPlay(() => {
         console.log("开始播放");
-         
-       
       });
 
       //播放更新
       innerAudioContext.onTimeUpdate(res => {
-         console.log("播放更新");
-        if(this.dragging === true){
+        console.log("播放更新");
+        if (this.dragging === true) {
           console.log("正在拖拽时不再更新");
-          return;//正在拖拽时不再更新
-        } 
+          return; //正在拖拽时不再更新
+        }
 
         this.time = timeFormat(Math.floor(innerAudioContext.currentTime));
         // console.log("currentTime", innerAudioContext.currentTime);
         // console.log("duration", innerAudioContext.duration);
-       
+
         this.duration = timeFormat(Math.floor(innerAudioContext.duration));
         var progress = parseInt(
           innerAudioContext.currentTime / innerAudioContext.duration * 100
         );
-        
+
         //更新进度条
         this.progress = progress + "%";
-         
 
-         //更新drager
+        //更新drager
         let windowWidth = wx.getSystemInfoSync().windowWidth;
-        this.leftVal = progress /100  *  (windowWidth - 30 - 16);
-      
+        this.leftVal = progress;
 
         if (
           this.playingItem &&
@@ -166,17 +157,12 @@ export default {
       innerAudioContext.onCanplay(res => {
         console.log("可以播放");
         this.playing = this.autoPlay;
-         
- 
       });
 
       innerAudioContext.onWaiting(res => {
         console.log("onWaiting");
-         
+
         this.playing = false;
-         
-       
-        
       });
       //音频播放结束时
       innerAudioContext.onEnded(res => {
@@ -203,8 +189,6 @@ export default {
       });
 
       this.audioCtx = innerAudioContext;
-     
-        
     },
     //开始播放
     togglePlay(state) {
@@ -216,12 +200,10 @@ export default {
         this.audioCtx.play();
         this.playing = true;
       }
-    },
-    
+    }
   },
 
   mounted() {
-     
     this.init();
   },
 
@@ -231,26 +213,30 @@ export default {
 <style lang="less">
 /* 自定义播放皮肤 */
 
-.audio_area #playhead {
-  width: 2px;
-  height: 2px;
-  background-color: #0cbb08;
-  position: relative;
-  .i_drager {
-    @size: 16px;
-    position: absolute;
-    width: @size;
-    height: @size;
-    margin-right: -@size / 2;
-    top: -@size / 2;
-    border-radius: @size / 2;
-    background: red;
+.audio_area {
+  #timeline {
+    .i_drager {
+      left: 0%;
+      @size: 16px;
+      position: absolute;
+      width: @size;
+      height: @size;
+      margin-right: -@size / 2;
+      top: -@size / 2;
+      border-radius: @size / 2;
+      background: red;
+    }
+    .playhead {
+      width: 0px;
+      height: 2px;
+      background-color: #0cbb08;
+      position: relative;
+    }
   }
 }
 
- 
 .audio_area {
-   width: 100%;
+  width: 100%;
   display: inline-block;
   vertical-align: top;
   margin: 17px 1px 16px 0;
@@ -269,9 +255,9 @@ export default {
 
 //   display: inline-block;
 //   vertical-align: top;
- 
+
 //   font-size: 0;
- 
+
 //   font-weight: 400;
 //   text-decoration: none;
 //   -webkit-text-size-adjust: none;
