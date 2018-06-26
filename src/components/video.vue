@@ -1,7 +1,7 @@
 <template>
   <section>
     <!-- autoPlay取值为true 说明在详细播放页 -->
-    <div class="audio_area" :class="{audio_area_fix:autoPlay}" id="audioplayer">
+    <div class="audio_area" :class="{audio_area_fix:autoPlay}" :style="{width:videoWidth + 'px'}" id="audioplayer">
       <div class="audio_wrp" id="music" preload="true">
         <div class="audio_play_area play " @tap="togglePlay(playing)">
           <i class="icon_audio_default " v-if="!playing"></i>
@@ -50,7 +50,8 @@ export default {
       type: Boolean,
       default: false
     },
-    dragging: false //是否正在拖拽
+    dragging: false, //是否正在拖拽
+    videoWidth:0,
   },
 
   data() {
@@ -101,7 +102,8 @@ export default {
         //非法参数，不播放
         return; //非法参数，不播放
       }
-
+       let windowWidth = wx.getSystemInfoSync().windowWidth;
+      this.videoWidth = windowWidth - 26;
       const innerAudioContext = wx.createInnerAudioContext();
       innerAudioContext.autoplay = this.autoPlay;
       let playingItem = this.playingItem;
@@ -239,7 +241,7 @@ export default {
 }
 
 .audio_area {
-  width: 100%;
+ 
   display: inline-block;
   vertical-align: top;
   margin-bottom: 16px;
