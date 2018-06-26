@@ -1,6 +1,7 @@
 <template>
   <section>
-    <div class="audio_area" id="audioplayer">
+    <!-- autoPlay取值为true 说明在详细播放页 -->
+    <div class="audio_area" :class="{audio_area_fix:autoPlay}" id="audioplayer">
       <div class="audio_wrp" id="music" preload="true">
         <div class="audio_play_area play " @tap="togglePlay(playing)">
           <i class="icon_audio_default " v-if="!playing"></i>
@@ -241,29 +242,22 @@ export default {
   width: 100%;
   display: inline-block;
   vertical-align: top;
-  margin: 17px 1px 16px 0;
-  font-size: 0;
+  margin-bottom: 16px;
+ 
   position: relative;
   font-weight: 400;
   text-decoration: none;
   -webkit-text-size-adjust: none;
 }
-// .audio_area-fix {
-//   position: fixed;
-//   left:15px;
-//   top:0px;
-//   right:15px;
-//   z-index: 0;
-
-//   display: inline-block;
-//   vertical-align: top;
-
-//   font-size: 0;
-
-//   font-weight: 400;
-//   text-decoration: none;
-//   -webkit-text-size-adjust: none;
-// }
+.audio_area_fix {
+  position: fixed;
+  left:15px;
+  top:0px;
+  right:15px;
+  z-index: 99;
+ 
+ 
+}
 
 .audio_wrp {
   border: 1px solid #ebebeb;
