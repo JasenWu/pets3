@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details" @canPlay="play"></c-audio>
+    <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details" ></c-audio>
     <!-- 章节内容 -->
     <section v-if="initAudio && contentData.contents">
 
@@ -55,13 +55,8 @@ export default {
       console.log(item);
       item.show_zh = !item.show_zh;
       this.$forceUpdate();
-    },
-    play(innerAudioContext, audioInstance) {
-      setTimeout(() => {
-        innerAudioContext.play();
-        // innerAudioContext.seek(item.startTime); //路转播放
-      }, 100);
     }
+ 
   },
 
   mounted() {

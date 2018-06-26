@@ -2,7 +2,7 @@
 <section>
    <div  class="audio_area" id="audioplayer" >
     <div class="audio_wrp" id="music" preload="true">
-      <div class="audio_play_area play " @tap="togglePlay(playing)" id="pButton ">
+      <div class="audio_play_area play " @tap="togglePlay(playing)">
         <i class="icon_audio_default " v-if="!playing"></i>
         <i class="icon_audio_playing " v-else></i>
       </div>
@@ -61,7 +61,6 @@ export default {
   data() {
     return {
       progress: 0,
-     
       audioCtx: null, //音频实例
       playing: false,
       time: "00:00",
@@ -151,7 +150,7 @@ export default {
 
          //更新drager
         let windowWidth = wx.getSystemInfoSync().windowWidth;
-        this.leftVal = progress /100  *  (windowWidth - 30);
+        this.leftVal = progress /100  *  (windowWidth - 30 - 16);
       
 
         if (
@@ -203,8 +202,8 @@ export default {
         console.log(res.errCode);
       });
 
-        this.audioCtx = innerAudioContext;
-       this.$emit('canPlay',innerAudioContext,this);
+      this.audioCtx = innerAudioContext;
+     
         
     },
     //开始播放
