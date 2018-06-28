@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details" ></c-audio>
+    <h1 class="layout_title">{{details.title}}</h1>
     <!-- 章节内容 -->
     <section v-if="initAudio && contentData.contents">
 
@@ -131,7 +132,7 @@ export default {
 
 <style scoped lang="less">
 .container{
-  padding-top: 85px;
+  padding-bottom: 85px;
 }
 .layout_title {
   font-size: 18px;

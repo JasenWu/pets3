@@ -28,7 +28,7 @@ page{
   height: 100%;
 }
 .container {
-  height: 100%;
+  
   padding:0 15px;
   font-size: 12px;
  
