@@ -5,24 +5,25 @@
     <!-- player style -->
 
     <c-audio v-if="initAudio" ref="audioEle" :autoPlay="false" :playingItem="playingItem" :details="details"></c-audio>
-    <ul class="layout_list_wrap" v-if="initAudio">
-      <li v-for="(item,index) in unitList[details.unit].children" :key="index">
+    
+    <ul class="layout_list_wrap" v-if="initAudio && playingItem.children">
+      <li v-for="(item,index) in  playingItem.children" :key="index">
         <a @tap="toDetails(index)"   hover-class="navigator-hover">
                {{index}}、{{item.title}}
               <i class="icon alifont af-you"></i>
         </a>
       </li>
     </ul>
-    <div v-else >list is wrtting</div>
 
+    <!-- <div>The list is Writting</div> -->
+    
   </div>
 </template>
 
 <script>
-
 import Audio from "@components/video"; //Audio播放组件
- 
-import {assetsSrc,loadingConfig} from "@models/index"
+
+import { assetsSrc, loadingConfig } from "@models/index";
 export default {
   components: {
     "c-audio": Audio
@@ -33,7 +34,7 @@ export default {
         title: "",
         unit: 0 //单元号,
       },
-      unitList: {},
+
       playingItem: {
         order: 0
       },
@@ -42,50 +43,47 @@ export default {
   },
 
   methods: {
-    toDetails(index){
+    toDetails(index) {
       this.$refs.audioEle.audioCtx.pause(); //销毁音频实例
       this.playing = false;
-      
+
       wx.navigateTo({
-        url: '/pages/play/main?unit='+this.details.unit+'&contentOrder='+index
-      })
+        url:
+          "/pages/play/main?unit=" +
+          this.details.unit +
+          "&contentOrder=" +
+          index
+      });
     }
- 
-   
   },
 
   mounted() {
-    wx.showLoading(loadingConfig)
-    
+    wx.showLoading(loadingConfig);
+
     wx.request({
       url: `${assetsSrc}contentData/unitList.json`, //仅为示例，并非真实的接口地址
-      data: {
-
-      },
+      data: {},
       header: {
         "content-type": "application/json" // 默认值
       },
-      success: (res)=> {
-        let unitList =  res.data;
-        this.unitList = unitList;
-  
-         // 调用应用实例的方法获取全局数据
+      success: res => {
+        let unitList = res.data;
+
+        // 调用应用实例的方法获取全局数据
         this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
         let unit = this.details.unit;
-        this.details.title = this.unitList[unit].title;
-        let item = this.unitList[this.details.unit];
+        this.details.title = unitList[unit].title;
+        let item = unitList[this.details.unit];
 
         this.playingItem = item;
         this.initAudio = true;
-         wx.hideLoading()
-        
- 
+        wx.hideLoading();
       },
-      fail(res){
-        console.log('fail',res);
+      fail(res) {
+        console.log("fail", res);
       }
     });
- 
+
     //用户退出页面
     this.$mp.page.onUnload = () => {
       console.log("退出页面");
@@ -142,16 +140,14 @@ export default {
   width: 100%;
   li {
     width: 100%;
-   
-   
-    a{
-       color: #18b4ed;
-       display: flex;
-       justify-content: space-between;
-       line-height: 36px;
-       border-bottom: 1px solid #eee;
+
+    a {
+      color: #18b4ed;
+      display: flex;
+      justify-content: space-between;
+      line-height: 36px;
+      border-bottom: 1px solid #eee;
     }
-   
   }
 }
 .layout_tips {
