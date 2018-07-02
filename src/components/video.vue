@@ -106,6 +106,7 @@ export default {
       this.videoWidth = windowWidth - 26;
       const innerAudioContext = wx.createInnerAudioContext();
       innerAudioContext.autoplay = this.autoPlay;
+      innerAudioContext.obeyMuteSwitch = false;//不遵循系统静音开关
       let playingItem = this.playingItem;
       console.log("playingItem", playingItem);
 
