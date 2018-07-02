@@ -3,15 +3,15 @@
     <!-- autoPlay取值为true 说明在详细播放页 -->
     <div class="audio_area" :class="{audio_area_fix:autoPlay}" :style="{width:videoWidth + 'px'}" id="audioplayer">
       <div class="audio_wrp" id="music" preload="true">
-        <div class="audio_play_area play"  @tap="togglePlay(playing)" >
-          <i class="icon iconfont icon-bofang" style="font-size:26px;color:##1AAD16;" v-if="!playing"></i>
-          <i class="icon iconfont icon-tablesuspend"    style="color:##1AAD16;" v-else></i>
+        <div class="audio_play_area"  @tap="togglePlay(playing)" >
+          <i class="icon iconfont icon-bofang" style="margin-left:-5px;margin-top:-5px;font-size:30px;color:#1AAD16;" v-if="!playing"></i>
+          <i class="icon iconfont icon-tablesuspend"    style="color:#1AAD16;font-size:18px;" v-else></i>
         </div>
 
         <div class="audio_info_area">
           <strong class="audio_title ">{{details.title}}</strong>
           <div class="audio_source tips_global ">
-            {{time}} &nbsp;&nbsp;/&nbsp;&nbsp; {{duration}}&nbsp;&nbsp;{{playing}}
+            {{time}} &nbsp;&nbsp;/&nbsp;&nbsp; {{duration}} 
           </div>
         </div>
         <div id="timeline" class="progress_bar">
@@ -71,17 +71,15 @@ export default {
 
       let pos = audioCtx.duration * this.leftVal / 100;
       audioCtx.seek(pos);
-      console.log("pos", pos);
+    
 
-      //audioCtx.play();
       this.dragging = false;
-      this.playing = true;
+    
     },
     touchstart(e) {
       let audioCtx = this.audioCtx;
-      //audioCtx.pause();
       this.dragging = true;
-      this.playing = false;
+
     },
     touchmove(e) {
       let windowWidth = wx.getSystemInfoSync().windowWidth;
@@ -160,31 +158,24 @@ export default {
         //更新drager
         let windowWidth = wx.getSystemInfoSync().windowWidth;
         this.leftVal = progress;
-
-        if (
-          this.playingItem &&
-          this.playingItem.endTime <= backgroundAudioManager.currentTime
-        ) {
-          backgroundAudioManager.pause(); //暂停
-          this.playing = false;
-        }
+ 
       });
 
       //可以播放时
       backgroundAudioManager.onCanplay(res => {
         console.log("可以播放");
-        this.playing = true;
+     
       });
 
       backgroundAudioManager.onWaiting(res => {
         console.log("onWaiting");
 
-        this.playing = false;
+        
       });
       //音频播放结束时
       backgroundAudioManager.onEnded(res => {
         console.log("播放结束");
-        this.playing = false;
+       
       });
 
       //播放错误时
@@ -194,6 +185,7 @@ export default {
       });
 
       this.audioCtx = backgroundAudioManager;
+      this.playing = true;
     },
     //开始播放
     togglePlay(state) {
@@ -219,7 +211,7 @@ export default {
           console.log("有实例但未结束");
           if (state) {
             //正在播放
-             this.playing = !state;
+             this.playing = false;
             this.audioCtx.pause();
             //  wx.showModal({
             //   title:"请求暂停",
@@ -227,7 +219,7 @@ export default {
             // })
            
           }else {
-            this.playing = !state;
+            this.playing = true;
              this.$forceUpdate();
             this.audioCtx.play();
             // wx.showModal({
@@ -311,22 +303,14 @@ export default {
   float: left;
   margin: 9px 22px 10px 5px;
   font-size: 0;
-  width: 18px;
+  width: 25px;
   height: 25px;
+ 
 }
 
-.audio_area .pic_audio_default {
-  display: none;
-  width: 18px;
-}
+ 
 
-.audio_area .audio_length {
-  float: right;
-  font-size: 14px;
-  margin-top: 3px;
-  margin-left: 1em;
-}
-
+ 
 .audio_info_area {
   overflow: hidden;
 }
@@ -358,47 +342,7 @@ export default {
   height: 2px;
   width: 100%;
 }
-
-.audio_play_area .icon_audio_default {
-  background: transparent
-    url("http://www.renjie.net.cn/pets3/img/icon_audio_unread26f1f1.png")
-    no-repeat 0 0;
-  width: 18px;
-  height: 25px;
-  vertical-align: middle;
-  -webkit-background-size: 18px auto;
-  background-size: 18px auto;
-}
-
-.audio_play_area .icon_audio_playing {
-  background: transparent
-    url("http://www.renjie.net.cn/pets3/img/icon_audio_reading_126f1f1.png")
-    no-repeat 0 0;
-  width: 18px;
-  height: 25px;
-  vertical-align: middle;
-  -webkit-background-size: 18px auto;
-  background-size: 18px auto;
-  // -webkit-animation: audio_playing 1s infinite;
-}
-
-@-webkit-keyframes audio_playing {
-  30% {
-    background-image: url("http://www.renjie.net.cn/pets3/img/icon_audio_reading_126f1f1.png");
-  }
-  31% {
-    background-image: url("http://www.renjie.net.cn/pets3/img/icon_audio_reading_226f1f1.png");
-  }
-  61% {
-    background-image: url("http://www.renjie.net.cn/pets3/img/icon_audio_reading_226f1f1.png");
-  }
-  62% {
-    background-image: url(http://www.renjie.net.cn/pets3/img/icon_audio_reading_326f1f1.png);
-  }
-  100% {
-    background-image: url(http://www.renjie.net.cn/pets3/img/icon_audio_reading_326f1f1.png);
-  }
-}
+ 
 </style>
 
 
