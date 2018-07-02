@@ -1,11 +1,11 @@
 <template>
   <section>
     <!-- autoPlay取值为true 说明在详细播放页 -->
-    <div class="audio_area"  :class="{audio_area_fix:autoPlay}"  :style="{width:videoWidth + 'px'}" id="audioplayer">
+    <div class="audio_area" :class="{audio_area_fix:autoPlay}" :style="{width:videoWidth + 'px'}" id="audioplayer">
       <div class="audio_wrp" id="music" preload="true">
-        <div class="audio_play_area play " @tap="togglePlay(playing)">
-          <i class="icon_audio_default " v-if="!playing"></i>
-          <i class="icon_audio_playing " v-else></i>
+        <div class="audio_play_area play ">
+          <i class="icon iconfont icon-bofang"  @tap="togglePlay(playing)" style="font-size:26px;" v-if="!playing"></i>
+          <i class="icon iconfont icon-tablesuspend"  @tap="togglePlay(playing)" v-else></i>
         </div>
 
         <div class="audio_info_area">
@@ -51,7 +51,7 @@ export default {
       default: false
     },
     dragging: false, //是否正在拖拽
-    videoWidth:0,
+    videoWidth: 0
   },
 
   data() {
@@ -68,15 +68,18 @@ export default {
     touchend(e) {
       let audioCtx = this.audioCtx;
       let windowWidth = wx.getSystemInfoSync().windowWidth;
-    
+
       let pos = audioCtx.duration * this.leftVal / 100;
       audioCtx.seek(pos);
+      console.log("pos", pos);
+
+      //audioCtx.play();
       this.dragging = false;
       this.playing = true;
     },
     touchstart(e) {
       let audioCtx = this.audioCtx;
-      audioCtx.pause();
+      //audioCtx.pause();
       this.dragging = true;
       this.playing = false;
     },
@@ -97,48 +100,58 @@ export default {
       let progress = val + "%";
       this.progress = progress;
     },
+    getUrl(playingItem) {
+      if (playingItem.audioName) {
+        //有音频资源地址
+        let name = `unit${this.details.unit}_${this.playingItem.order}.mp4`;
+        return `${assetsSrc}audio/${name}`;
+      } else {
+        return `${assetsSrc}audio/unit${this.details.unit}.mp3`;
+      }
+    },
     init() {
       if (this.details.unit <= 0) {
         //非法参数，不播放
         return; //非法参数，不播放
       }
-       let windowWidth = wx.getSystemInfoSync().windowWidth;
+      let windowWidth = wx.getSystemInfoSync().windowWidth;
       this.videoWidth = windowWidth - 26;
-      const innerAudioContext = wx.createInnerAudioContext();
-      innerAudioContext.autoplay = this.autoPlay;
-      innerAudioContext.obeyMuteSwitch = false;//不遵循系统静音开关
+
+      const backgroundAudioManager = wx.getBackgroundAudioManager();
+
+      backgroundAudioManager.title = this.details.title;
+      backgroundAudioManager.epname = "Pets3";
+      backgroundAudioManager.singer = "Jason.wu";
+      backgroundAudioManager.coverImgUrl = assetsSrc + "img/cover.jpg";
+
       let playingItem = this.playingItem;
       console.log("playingItem", playingItem);
+      backgroundAudioManager.src = this.getUrl(playingItem);
 
-      if (playingItem.audioName) {
-        //有音频资源地址
-        let name = `unit${this.details.unit}_${this.playingItem.order}.mp4`;
-        innerAudioContext.src = `${assetsSrc}audio/${name}`;
-      } else {
-        innerAudioContext.src = `${assetsSrc}audio/unit${
-          this.details.unit
-        }.mp3`;
+      if (!this.autoPlay) {
+        //不自动播放
+        backgroundAudioManager.pause();
       }
 
-      innerAudioContext.onPlay(() => {
+      backgroundAudioManager.onPlay(() => {
         console.log("开始播放");
       });
 
       //播放更新
-      innerAudioContext.onTimeUpdate(res => {
+      backgroundAudioManager.onTimeUpdate(res => {
         console.log("播放更新");
         if (this.dragging === true) {
           console.log("正在拖拽时不再更新");
           return; //正在拖拽时不再更新
         }
 
-        this.time = timeFormat(Math.floor(innerAudioContext.currentTime));
-        // console.log("currentTime", innerAudioContext.currentTime);
-        // console.log("duration", innerAudioContext.duration);
+        this.time = timeFormat(Math.floor(backgroundAudioManager.currentTime));
 
-        this.duration = timeFormat(Math.floor(innerAudioContext.duration));
+        this.duration = timeFormat(Math.floor(backgroundAudioManager.duration));
         var progress = parseInt(
-          innerAudioContext.currentTime / innerAudioContext.duration * 100
+          backgroundAudioManager.currentTime /
+            backgroundAudioManager.duration *
+            100
         );
 
         //更新进度条
@@ -150,65 +163,79 @@ export default {
 
         if (
           this.playingItem &&
-          this.playingItem.endTime <= innerAudioContext.currentTime
+          this.playingItem.endTime <= backgroundAudioManager.currentTime
         ) {
-          innerAudioContext.pause(); //暂停
+          backgroundAudioManager.pause(); //暂停
           this.playing = false;
         }
       });
 
       //可以播放时
-      innerAudioContext.onCanplay(res => {
+      backgroundAudioManager.onCanplay(res => {
         console.log("可以播放");
-        this.playing = this.autoPlay;
+        this.playing = true;
       });
 
-      innerAudioContext.onWaiting(res => {
+      backgroundAudioManager.onWaiting(res => {
         console.log("onWaiting");
 
         this.playing = false;
       });
       //音频播放结束时
-      innerAudioContext.onEnded(res => {
-        console.log("可以播放");
-        this.playing = false;
-      });
-
-      //音频播放结束时
-      innerAudioContext.onSeeking(res => {
-        innerAudioContext.pause();
-        this.playing = false;
-      });
-
-      //音频播放结束时
-      innerAudioContext.onSeeked(res => {
-        innerAudioContext.play();
+      backgroundAudioManager.onEnded(res => {
+        console.log("播放结束");
         this.playing = false;
       });
 
       //播放错误时
-      innerAudioContext.onError(res => {
+      backgroundAudioManager.onError(res => {
         console.log(res.errMsg);
         console.log(res.errCode);
       });
 
-      this.audioCtx = innerAudioContext;
+      this.audioCtx = backgroundAudioManager;
     },
     //开始播放
     togglePlay(state) {
-      if (state) {
-        //正在播放
-        this.audioCtx.pause();
-        this.playing = false;
-      } else {
-        this.audioCtx.play();
-        this.playing = true;
+      let over = false;
+      if (!this.audioCtx && !this.autoPlay) {//章节列表页，未初始化时
+        //没有实例的情况直接初始化
+        console.log("章节列表页，未初始化时");
+        this.init();
+        return;
+        
+      } else {//播放详情页 或者已经实例化的章节列表页
+        //已经结束的情况
+        console.log("播放详情页 或者已经实例化的章节列表页");
+
+        let currentTime = Math.floor(this.audioCtx.currentTime);
+        let duration = Math.floor(this.audioCtx.duration);
+        let over = Math.abs(duration - currentTime) <= 3;//总时长和当前位置在3秒内，则认为已经结束，重新播放
+        if (currentTime <= 0 || over) {//有实例，但已经结束
+          //已经播放结束
+          this.init();
+          return;
+        } else {//有实例但未结束
+          console.log("有实例但未结束");
+          if (state) {
+            //正在播放
+            this.audioCtx.pause();
+            this.playing = false;
+          } else {
+            this.audioCtx.play();
+            this.playing = true;
+          }
+        }
       }
+ 
     }
   },
 
   mounted() {
-    this.init();
+    if (this.autoPlay) {
+      //自动播放
+      this.init();
+    }
   },
 
   beforeDestroy() {}
@@ -221,7 +248,7 @@ export default {
   width: 100%;
   #timeline {
     width: 95%;
-    
+
     .i_drager {
       left: 0%;
       @size: 16px;
@@ -243,11 +270,10 @@ export default {
 }
 
 .audio_area {
- 
   display: inline-block;
   vertical-align: top;
   margin-bottom: 16px;
- 
+
   position: relative;
   font-weight: 400;
   text-decoration: none;
@@ -256,12 +282,10 @@ export default {
 .audio_area_fix {
   width: initial !important;
   position: fixed;
-  left:15px;
-  bottom:5px;
-  right:15px;
+  left: 15px;
+  bottom: 5px;
+  right: 15px;
   z-index: 99;
- 
- 
 }
 
 .audio_wrp {
@@ -343,7 +367,7 @@ export default {
   vertical-align: middle;
   -webkit-background-size: 18px auto;
   background-size: 18px auto;
-  -webkit-animation: audio_playing 1s infinite;
+  // -webkit-animation: audio_playing 1s infinite;
 }
 
 @-webkit-keyframes audio_playing {

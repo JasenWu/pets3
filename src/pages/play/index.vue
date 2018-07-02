@@ -122,10 +122,10 @@ export default {
     //用户退出页面
     this.$mp.page.onUnload = () => {
       console.log("退出页面");
-      this.$refs.audioEle.audioCtx.destroy(); //销毁音频实例
+      this.$refs.audioEle.audioCtx.stop(); //销毁音频实例
       this.initAudio = false;
     };
-    this.$mp.page.onPageScroll = scroll => {};
+ 
   }
 };
 </script>
