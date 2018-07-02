@@ -3,15 +3,15 @@
     <!-- autoPlay取值为true 说明在详细播放页 -->
     <div class="audio_area" :class="{audio_area_fix:autoPlay}" :style="{width:videoWidth + 'px'}" id="audioplayer">
       <div class="audio_wrp" id="music" preload="true">
-        <div class="audio_play_area play ">
-          <i class="icon iconfont icon-bofang"  @tap="togglePlay(playing)" style="font-size:26px;" v-if="!playing"></i>
-          <i class="icon iconfont icon-tablesuspend"  @tap="togglePlay(playing)" v-else></i>
+        <div class="audio_play_area play"  @tap="togglePlay(playing)" >
+          <i class="icon iconfont icon-bofang" style="font-size:26px;color:##1AAD16;" v-if="!playing"></i>
+          <i class="icon iconfont icon-tablesuspend"    style="color:##1AAD16;" v-else></i>
         </div>
 
         <div class="audio_info_area">
           <strong class="audio_title ">{{details.title}}</strong>
           <div class="audio_source tips_global ">
-            {{time}} &nbsp;&nbsp;/&nbsp;&nbsp; {{duration}}
+            {{time}} &nbsp;&nbsp;/&nbsp;&nbsp; {{duration}}&nbsp;&nbsp;{{playing}}
           </div>
         </div>
         <div id="timeline" class="progress_bar">
@@ -219,11 +219,23 @@ export default {
           console.log("有实例但未结束");
           if (state) {
             //正在播放
+             this.playing = !state;
             this.audioCtx.pause();
-            this.playing = false;
-          } else {
+            //  wx.showModal({
+            //   title:"请求暂停",
+            //   content:new String(this.playing),
+            // })
+           
+          }else {
+            this.playing = !state;
+             this.$forceUpdate();
             this.audioCtx.play();
-            this.playing = true;
+            // wx.showModal({
+            //   title:"请求播放",
+            //   content:new String(this.playing),
+            // })
+           
+            
           }
         }
       }
