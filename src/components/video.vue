@@ -1,7 +1,7 @@
 <template>
   <section>
     <!-- autoPlay取值为true 说明在详细播放页 -->
-    <div class="audio_area" :class="{audio_area_fix:autoPlay}" :style="{width:videoWidth + 'px'}" id="audioplayer">
+    <div class="audio_area"  :class="{audio_area_fix:autoPlay}"  :style="{width:videoWidth + 'px'}" id="audioplayer">
       <div class="audio_wrp" id="music" preload="true">
         <div class="audio_play_area play " @tap="togglePlay(playing)">
           <i class="icon_audio_default " v-if="!playing"></i>
@@ -218,6 +218,7 @@ export default {
 /* 自定义播放皮肤 */
 
 .audio_area {
+  width: 100%;
   #timeline {
     width: 95%;
     
@@ -253,9 +254,10 @@ export default {
   -webkit-text-size-adjust: none;
 }
 .audio_area_fix {
+  width: initial !important;
   position: fixed;
   left:15px;
-  top:0px;
+  bottom:5px;
   right:15px;
   z-index: 99;
  
