@@ -55,7 +55,6 @@ export default {
     toggleZh(item) {
       console.log(item);
       item.show_zh = !item.show_zh;
-      this.$forceUpdate();
     }
  
   },
