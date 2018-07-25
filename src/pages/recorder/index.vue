@@ -2,7 +2,17 @@
   <div>
     <button @tap="start">start record</button>
     <button @tap="play(tempFilePath)">play record</button>
-  
+
+    <button open-type="openSetting">打开授权设置页</button>
+    <button open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo">获取用户信息</button>
+    <img :src="userInfo.avatarUrl" />
+    <table>
+      <tr>
+        <td>
+          {{userInfo.nickName}}
+        </td>
+      </tr>
+    </table>
   </div>
 </template>
 
@@ -15,6 +25,7 @@ export default {
   data() {
     return {
       tempFilePath: "",
+      userInfo:{}
     };
   },
 
@@ -22,6 +33,11 @@ export default {
     
   },
   methods: {
+    onGotUserInfo: function(e) {
+    console.log(e)
+    this.userInfo = e.target.userInfo
+    
+  },
  
     play(tempFilePath){
       const innerAudioContext = wx.createInnerAudioContext();
