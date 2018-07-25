@@ -1,5 +1,14 @@
 import Vue from 'vue'
 import App from './App'
+
+import Raven from 'raven-js';
+import RavenVue from 'raven-js/plugins/vue';
+
+Raven.config('https://cca5c36322f6459187ab2d9598e54701@sentry.io/1249548')
+    .addPlugin(RavenVue, Vue)
+    .install();
+
+
 import './assets/iconfont/iconfont.css';
 
 Vue.config.productionTip = false
