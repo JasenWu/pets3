@@ -61,6 +61,8 @@ export default {
           "content-type": "application/json" // 默认值
         },
         success: res => {
+           
+          if(!res || !res.data.data) {return false;}//没有返回就不再执行下面的代码
           let count = parseInt(res.data.data[0].count);
           this.count = count;
           count = count + 1;
