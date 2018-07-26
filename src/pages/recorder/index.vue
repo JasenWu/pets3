@@ -13,6 +13,11 @@
         </td>
       </tr>
     </table>
+
+    <progress percent="20" show-info />
+<progress percent="40" stroke-width="12" />
+<progress percent="60" color="pink" />
+<progress percent="80" active />
   </div>
 </template>
 

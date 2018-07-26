@@ -115,6 +115,9 @@ export default {
   mounted() {
     this.getList();//章节列表
     this.getCount(); //获取已读数据
+    wx.showShareMenu({
+      withShareTicket: true
+    })
   }
 };
 </script>
