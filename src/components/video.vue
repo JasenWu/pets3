@@ -68,11 +68,8 @@ export default {
     touchend(e) {
       let audioCtx = this.audioCtx;
       let windowWidth = wx.getSystemInfoSync().windowWidth;
-
       let pos = audioCtx.duration * this.leftVal / 100;
       audioCtx.seek(pos);
-    
-
       this.dragging = false;
     
     },
@@ -123,7 +120,7 @@ export default {
       backgroundAudioManager.coverImgUrl = assetsSrc + "img/cover.jpg";
 
       let playingItem = this.playingItem;
-      console.log("playingItem", playingItem);
+   
       backgroundAudioManager.src = this.getUrl(playingItem);
 
       if (!this.autoPlay) {
@@ -197,9 +194,7 @@ export default {
         return;
         
       } else {//播放详情页 或者已经实例化的章节列表页
-        //已经结束的情况
-        console.log("播放详情页 或者已经实例化的章节列表页");
-
+ 
         let currentTime = Math.floor(this.audioCtx.currentTime);
         let duration = Math.floor(this.audioCtx.duration);
         let over = Math.abs(duration - currentTime) <= 3;//总时长和当前位置在3秒内，则认为已经结束，重新播放
@@ -212,20 +207,14 @@ export default {
           if (state) {
             //正在播放
              this.playing = false;
-            this.audioCtx.pause();
-            //  wx.showModal({
-            //   title:"请求暂停",
-            //   content:new String(this.playing),
-            // })
+             this.audioCtx.pause();
+ 
            
           }else {
             this.playing = true;
-             this.$forceUpdate();
+             
             this.audioCtx.play();
-            // wx.showModal({
-            //   title:"请求播放",
-            //   content:new String(this.playing),
-            // })
+ 
            
             
           }
