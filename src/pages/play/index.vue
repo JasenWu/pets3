@@ -16,6 +16,13 @@
       </div>
     </section>
     <div v-else class="layout_tips">
+
+      <!-- <div style="width:100%;height:300px;ovflow:scroll;">
+          <img src="https://www.renjie.net.cn/pets3/img/contents/unit11_01_01.jpeg" />
+      </div> -->
+      
+      
+              
       the content is writting...<br />
       if you want to help me ,please email to me ! <br />
       Email:447124329@qq.com<br />
@@ -101,8 +108,9 @@ export default {
             let item = this.unitList[this.details.unit].children[order];
 
             this.playingItem = item;
+            console.log('item',item);
             this.playingItem.order = order;
-           wx.hideLoading();
+             wx.hideLoading();
             this.initAudio = true;
             
           },
