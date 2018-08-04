@@ -9,8 +9,8 @@
         <ul>
           <li class="i_item" :class="{'layout_right':item.role == 2,'layout_left':item.role == 1,'layout_des':item.role == 0}" v-for="(item,index) in  contentData.contents" @tap="toggleZh(item)" :key="item.startTime">
             <b v-if="item.role != 0" class="i_name">{{contentData.roles[item.role].name}}</b>
-            <span class="i_text">{{item.text}}</span>
-            <span v-if="item.show_zh  == true" class="i_text">{{item.text_zh}}</span>
+            <span class="i_text" v-html="item.text"></span>
+            <span v-if="item.show_zh  == true" class="i_text" v-html="item.text_zh"></span>
           </li>
         </ul>
       </div>
@@ -62,12 +62,14 @@ export default {
     toggleZh(item) {
       console.log(item);
       item.show_zh = !item.show_zh;
-      this.$forceUpdate();
     }
  
   },
 
   mounted() {
+    wx.showShareMenu({
+      withShareTicket: true
+    })
     wx.showLoading(loadingConfig);
     wx.request({
       url: `${assetsSrc}contentData/unitList.json`, //仅为示例，并非真实的接口地址

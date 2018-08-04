@@ -60,6 +60,9 @@ export default {
   },
 
   mounted() {
+    wx.showShareMenu({
+      withShareTicket: true
+    })
     wx.showLoading(loadingConfig);
 
     wx.request({
