@@ -4,10 +4,9 @@
     <h1 class="layout_title">{{details.title}}</h1>
     <!-- 章节内容 -->
     <section v-if="initAudio && contentData.contents">
-
       <div class="layout_content">
         <ul>
-          <li class="i_item" :class="{'layout_right':item.role == 2,'layout_left':item.role == 1,'layout_des':item.role == 0}" v-for="(item,index) in  contentData.contents" @tap="toggleZh(item)" :key="item.startTime">
+          <li class="i_item" :class="{'layout_right':item.role == 2,'layout_left':item.role == 1,'layout_des':item.role == 0}" v-for="(item,index) in  contentData.contents" @tap="toggleZh(item,index)" :key="item.startTime">
             <b v-if="item.role != 0" class="i_name">{{contentData.roles[item.role].name}}</b>
             <span class="i_text" v-html="item.text"></span>
             <span v-if="item.show_zh  == true" class="i_text" v-html="item.text_zh"></span>
@@ -16,13 +15,6 @@
       </div>
     </section>
     <div v-else class="layout_tips">
-
-      <!-- <div style="width:100%;height:300px;ovflow:scroll;">
-          <img src="https://www.renjie.net.cn/pets3/img/contents/unit11_01_01.jpeg" />
-      </div> -->
-      
-      
-              
       the content is writting...<br />
       if you want to help me ,please email to me ! <br />
       Email:447124329@qq.com<br />
@@ -59,9 +51,10 @@ export default {
   },
 
   methods: {
-    toggleZh(item) {
-      console.log(item);
-      item.show_zh = !item.show_zh;
+    toggleZh(item,index) {
+      
+      this.$set(this.contentData.contents[index],'show_zh',!this.contentData.contents[index].show_zh)
+
     }
  
   },
@@ -82,7 +75,6 @@ export default {
         let unitList = res.data;
         this.unitList = unitList;
          
-
         // 调用应用实例的方法获取全局数据
         this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
         let unit = this.details.unit;

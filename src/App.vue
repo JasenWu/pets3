@@ -18,14 +18,14 @@ export default {
      console.log('onPageNotFound');
    },
    onShareAppMessage(res){
+     console.log('res',res);
      if (res.from === 'button') {
       // 来自页面内转发按钮
       console.log(res.target)
     }
     return {
-      title: 'Pets3小程序',
-      path: 'pages/play/main',
-      imageUrl:"http://www.renjie.net.cn/pets3/img/cover.jpg"
+      title: '',
+      path: ''
     }
    }
    
