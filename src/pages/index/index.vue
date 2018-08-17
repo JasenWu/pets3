@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { assetsSrc, loadingConfig } from "@models/index";
+import { getList, getCount, updateCount } from "@models/api";
 
 export default {
   components: {},
@@ -37,87 +37,35 @@ export default {
   },
 
   methods: {
-    //路转至日志页面
-    toLog() {
-      const url = "../logs/main";
-      wx.navigateTo({ url });
-    },
-    onGotUserInfo(info) {
-      alert(info);
-      console.log("userinfo");
-    },
-
-    //点击事件
-    clickHandle(msg, ev) {
-      console.log("clickHandle:", msg, ev);
-    },
+ 
     getCount() {
-      wx.request({
-        url: `${assetsSrc}api/RestController.php`, //仅为示例，并非真实的接口地址
-        data: {
-          req: "readed"
-        },
-        header: {
-          "content-type": "application/json" // 默认值
-        },
-        success: res => {
-           
-          if(!res || !res.data.data) {return false;}//没有返回就不再执行下面的代码
-          let count = parseInt(res.data.data[0].count);
-          this.count = count;
-          count = count + 1;
-          //增加一个
-          wx.request({
-            url: `${assetsSrc}api/RestController.php`, //仅为示例，并非真实的接口地址
-            method: "POST",
-            data: {
-              req: "readed",
-              type: "update",
-              params: {
-                count: count
-              }
-            },
-            header: {
-              "content-type": "application/json" // 默认值
-            },
-            success: res => {
-              console.log("res", res);
-            }
-          });
-        }
+      getCount({ req: "readed" }).then(res => {
+        let count = parseInt(res.data.data[0].count);
+        this.count = count;
+        count = count + 1;
+        updateCount({
+          req: "readed",
+          type: "update",
+          params: {
+            count: count
+          }
+        }).then(res => {});
       });
     },
     getList() {
-      wx.showLoading(loadingConfig);
-
-      wx.request({
-        url: `${assetsSrc}contentData/unitList.json`, //仅为示例，并非真实的接口地址
-        data: {},
-        header: {
-          "content-type": "application/json" // 默认值
-        },
-        success: res => {
-          console.log("res", res);
-          if (!res.data) {
-            console.log("无数据退出");
-          }
-          let unitList = res.data;
-          this.unitList = unitList;
-          wx.hideLoading();
-        },
-        fail: res => {
-          console.log("fail", res);
-        }
+      getList().then(res => {
+        let unitList = res.data;
+        this.unitList = unitList;
       });
     }
   },
 
   mounted() {
-    this.getList();//章节列表
+    this.getList(); //章节列表
     this.getCount(); //获取已读数据
     wx.showShareMenu({
       withShareTicket: true
-    })
+    });
   }
 };
 </script>
