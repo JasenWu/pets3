@@ -3,8 +3,8 @@
     <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details"></c-audio>
     <h1 class="layout_title">{{details.title}}</h1>
     <!-- 章节内容 -->
-    <a href="/" class="i_pre">pre</a>
-    <a href="/" class="i_next">next</a>
+    <a href="javascript:;" @tap="pre" class="i_pre">pre</a>
+    <a href="javascript:;" @tap="next" class="i_next">next</a>
     <section v-if="initAudio && contentData.contents">
       <div class="layout_content">
         <ul>
@@ -53,6 +53,12 @@ export default {
   },
 
   methods: {
+    pre(){
+      
+    },
+    next(){
+
+    },
     toggleZh(item, index) {
       this.$set(
         this.contentData.contents[index],
@@ -87,7 +93,7 @@ export default {
         getContent(`${assetsSrc}contentData/${textName}.json`)
           .then(res => {
             let contentData = res.data;
-            
+
             this.contentData = contentData;
 
             let order = this.$root.$mp.query.contentOrder;
