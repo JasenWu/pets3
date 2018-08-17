@@ -3,6 +3,8 @@
     <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details"></c-audio>
     <h1 class="layout_title">{{details.title}}</h1>
     <!-- 章节内容 -->
+    <a href="/" class="i_pre">pre</a>
+    <a href="/" class="i_next">next</a>
     <section v-if="initAudio && contentData.contents">
       <div class="layout_content">
         <ul>
@@ -85,6 +87,7 @@ export default {
         getContent(`${assetsSrc}contentData/${textName}.json`)
           .then(res => {
             let contentData = res.data;
+            
             this.contentData = contentData;
 
             let order = this.$root.$mp.query.contentOrder;
@@ -116,6 +119,27 @@ export default {
 <style scoped lang="less">
 .container {
   padding-bottom: 85px;
+  .btn{
+    position: fixed;
+    left:15px;
+    top:200px;
+    padding: 10px;
+    color:#fff;
+    background: rgba(0,0,0,.5);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .i_pre{
+    .btn();
+    
+  }
+  .i_next{
+    .btn();
+ 
+    left: initial;
+    right:15px;
+    
+  }
 }
 .layout_title {
   font-size: 18px;
