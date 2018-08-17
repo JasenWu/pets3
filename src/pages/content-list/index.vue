@@ -14,16 +14,13 @@
         </a>
       </li>
     </ul>
-
-    <!-- <div v-else>The list is Writting</div> -->
-    
+ 
   </div>
 </template>
 
 <script>
 import Audio from "@components/video"; //Audio播放组件
-
-import { assetsSrc, loadingConfig } from "@models/index";
+import { getList } from "@models/api";
 export default {
   components: {
     "c-audio": Audio
@@ -34,7 +31,6 @@ export default {
         title: "",
         unit: 0 //单元号,
       },
-
       playingItem: {
         order: 0
       },
@@ -63,15 +59,8 @@ export default {
     wx.showShareMenu({
       withShareTicket: true
     })
-    wx.showLoading(loadingConfig);
 
-    wx.request({
-      url: `${assetsSrc}contentData/unitList.json`, //仅为示例，并非真实的接口地址
-      data: {},
-      header: {
-        "content-type": "application/json" // 默认值
-      },
-      success: res => {
+     getList().then(res => {
         let unitList = res.data;
 
         // 调用应用实例的方法获取全局数据
@@ -82,13 +71,10 @@ export default {
 
         this.playingItem = item;
         this.initAudio = true;
-        wx.hideLoading();
-      },
-      fail(res) {
-        console.log("fail", res);
-      }
-    });
+      }).catch((err)=>{
 
+      });
+ 
     //用户退出页面
     this.$mp.page.onUnload = () => {
       console.log("退出页面");

@@ -1,5 +1,5 @@
 import { assetsSrc } from "@models/index";
-import { Get,Post } from "@assets/js/ajax";
+import { Get,Post,getContentFunc } from "@assets/js/ajax";
 
  //获取目录列表
 export const getList = (params = {}) => {
@@ -13,4 +13,9 @@ export const getCount = (params = {}) => {
 //更新已读数量
 export const updateCount = (params = {}) => {
   return Post(`${assetsSrc}api/RestController.php`, params)
+}
+
+//更新已读数量
+export const getContent = (url) => {
+  return getContentFunc(url)
 }

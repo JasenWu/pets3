@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details" ></c-audio>
+    <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details"></c-audio>
     <h1 class="layout_title">{{details.title}}</h1>
     <!-- 章节内容 -->
     <section v-if="initAudio && contentData.contents">
@@ -15,17 +15,17 @@
       </div>
     </section>
     <div v-else class="layout_tips">
-      the content is writting...<br />
-      if you want to help me ,please email to me ! <br />
-      Email:447124329@qq.com<br />
-      author:Jason.Wu
-      </div>
+      the content is writting...<br /> if you want to help me ,please email to me ! <br /> Email:447124329@qq.com
+      <br /> author:Jason.Wu
+    </div>
   </div>
 </template>
 
 <script>
 import { assetsSrc, loadingConfig } from "@models/index";
 import Audio from "@components/video.vue"; //Audio播放组件
+
+import { getList, getContent } from "@models/api";
 
 export default {
   components: {
@@ -51,30 +51,24 @@ export default {
   },
 
   methods: {
-    toggleZh(item,index) {
-      
-      this.$set(this.contentData.contents[index],'show_zh',!this.contentData.contents[index].show_zh)
-
+    toggleZh(item, index) {
+      this.$set(
+        this.contentData.contents[index],
+        "show_zh",
+        !this.contentData.contents[index].show_zh
+      );
     }
- 
   },
 
   mounted() {
     wx.showShareMenu({
       withShareTicket: true
-    })
-    wx.showLoading(loadingConfig);
-    wx.request({
-      url: `${assetsSrc}contentData/unitList.json`, //仅为示例，并非真实的接口地址
-      data: {},
-      header: {
-        "content-type": "application/json" // 默认值
-      },
-      success: res => {
-        wx.hideLoading();
+    });
+    getList()
+      .then(res => {
         let unitList = res.data;
         this.unitList = unitList;
-         
+
         // 调用应用实例的方法获取全局数据
         this.details.unit = parseInt(this.$root.$mp.query.unit) || 1;
         let unit = this.details.unit;
@@ -87,13 +81,9 @@ export default {
         }
 
         let textName = `unit${unit}_children${order}`;
-        wx.request({
-          url: `${assetsSrc}contentData/${textName}.json`, //仅为示例，并非真实的接口地址
-          data: {},
-          header: {
-            "content-type": "application/json" // 默认值
-          },
-          success: res => {
+
+        getContent(`${assetsSrc}contentData/${textName}.json`)
+          .then(res => {
             let contentData = res.data;
             this.contentData = contentData;
 
@@ -102,24 +92,16 @@ export default {
             let item = this.unitList[this.details.unit].children[order];
 
             this.playingItem = item;
-            console.log('item',item);
+
             this.playingItem.order = order;
-             wx.hideLoading();
+
             this.initAudio = true;
-            
-          },
-          fail:(res)=> {
-            console.log("fail", res);
-            wx.hideLoading();
-           
-          }
-        });
-      },
-      fail:(res)=> {
-        console.log("fail", res);
-        wx.hideLoading();
-      }
-    });
+          })
+          .catch((err => {}));
+      })
+      .catch((err => {}));
+
+   
 
     //用户退出页面
     this.$mp.page.onUnload = () => {
@@ -127,13 +109,12 @@ export default {
       this.$refs.audioEle.audioCtx.stop(); //销毁音频实例
       this.initAudio = false;
     };
- 
   }
 };
 </script>
 
 <style scoped lang="less">
-.container{
+.container {
   padding-bottom: 85px;
 }
 .layout_title {
