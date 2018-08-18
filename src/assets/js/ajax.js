@@ -1,7 +1,7 @@
 import {loadingConfig,assetsSrc } from "@models/index";
 //Get请求
 export const Get = (url,params)=>{
-  console.log('params',params)
+ 
   let para = {req: "readed"};
   wx.showLoading(loadingConfig);
   return new Promise((resolve,reject)=>{

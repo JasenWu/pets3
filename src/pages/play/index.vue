@@ -62,12 +62,12 @@ export default {
       let order = parseInt(this.playingItem.order)
       if(order <= 1){
         this.noPre = true;
-        console.log('first chapter')
+   
         return;
       }
       order=order-1;
       this.noNext = false;
-      console.log(order);
+ 
       wx.navigateTo({
         url:
           "/pages/play/main?unit=" +
@@ -83,13 +83,13 @@ export default {
       
        if(order>=this.maxOrder){
          this.noNext = true;
-          console.log('maxOrder',this.maxOrder);
+        
           return;
        }
 
       order=order+1;
       this.noPre = false;
-      console.log(order);
+  
       wx.navigateTo({
         url:
           "/pages/play/main?unit=" +
@@ -126,7 +126,7 @@ export default {
         let keys = Object.keys(this.unitList[unit].children);
 
         this.maxOrder =  Math.max(...keys);
-        // console.log('keys',maxOrder)
+       
         if (order) {
           //在具体的dialog
           this.details.title = `Unit ${unit}  ${title}-${order}`;
@@ -153,7 +153,7 @@ export default {
 
           })
           .catch((err => {
-            console.log('err',err);
+           
           }));
       })
       .catch((err => {}));
@@ -162,7 +162,7 @@ export default {
 
     //用户退出页面
     this.$mp.page.onUnload = () => {
-      console.log("退出页面");
+ 
       this.$refs.audioEle.audioCtx.stop(); //销毁音频实例
       this.initAudio = false;
     };
