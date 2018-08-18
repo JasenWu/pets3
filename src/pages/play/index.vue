@@ -3,8 +3,8 @@
     <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details"></c-audio>
     <h1 class="layout_title">{{details.title}}</h1>
     <!-- 章节内容 -->
-    <a href="javascript:;" @tap="pre" class="i_pre">pre</a>
-    <a href="javascript:;" @tap="next" class="i_next">next</a>
+    <a   @tap="pre" v-show="!noPre && initAudio" class="i_pre">pre</a>
+    <a   @tap="next" v-show="!noNext && initAudio" class="i_next">next</a>
     <section v-if="initAudio && contentData.contents">
       <div class="layout_content">
         <ul>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { assetsSrc, loadingConfig } from "@models/index";
+
 import Audio from "@components/video.vue"; //Audio播放组件
 
 import { getList, getContent } from "@models/api";
@@ -37,7 +37,8 @@ export default {
     return {
       details: {
         title: "",
-        unit: 0 //单元号,
+        unit: 0, //单元号,
+        maxOrder:1,
       },
       unitList: {},
       playingItem: {
@@ -48,16 +49,55 @@ export default {
       contentData: {
         contents: [],
         roles: {}
-      }
+      },
+      noPre:false,
+      noNext:false,
+     
     };
   },
 
   methods: {
     pre(){
+      this.initAudio = false;
+      let order = parseInt(this.playingItem.order)
+      if(order <= 1){
+        this.noPre = true;
+        console.log('first chapter')
+        return;
+      }
+      order=order-1;
+      this.noNext = false;
+      console.log(order);
+      wx.navigateTo({
+        url:
+          "/pages/play/main?unit=" +
+          this.details.unit +
+          "&contentOrder=" +
+          order
+      });
       
     },
     next(){
+      this.initAudio = false;
+      let order = parseInt(this.playingItem.order);
+      
+       if(order>=this.maxOrder){
+         this.noNext = true;
+          console.log('maxOrder',this.maxOrder);
+          return;
+       }
 
+      order=order+1;
+      this.noPre = false;
+      console.log(order);
+      wx.navigateTo({
+        url:
+          "/pages/play/main?unit=" +
+          this.details.unit +
+          "&contentOrder=" +
+          order
+      });
+       
     },
     toggleZh(item, index) {
       this.$set(
@@ -83,14 +123,19 @@ export default {
 
         let order = this.$root.$mp.query.contentOrder;
         let title = this.unitList[unit].children[order].title;
+        let keys = Object.keys(this.unitList[unit].children);
+
+        this.maxOrder =  Math.max(...keys);
+        // console.log('keys',maxOrder)
         if (order) {
           //在具体的dialog
           this.details.title = `Unit ${unit}  ${title}-${order}`;
         }
+        
 
         let textName = `unit${unit}_children${order}`;
 
-        getContent(`${assetsSrc}contentData/${textName}.json`)
+        getContent(`contentData/${textName}.json`)
           .then(res => {
             let contentData = res.data;
 
@@ -105,8 +150,11 @@ export default {
             this.playingItem.order = order;
 
             this.initAudio = true;
+
           })
-          .catch((err => {}));
+          .catch((err => {
+            console.log('err',err);
+          }));
       })
       .catch((err => {}));
 

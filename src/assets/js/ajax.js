@@ -1,4 +1,4 @@
-import {loadingConfig } from "@models/index";
+import {loadingConfig,assetsSrc } from "@models/index";
 //Get请求
 export const Get = (url,params)=>{
   console.log('params',params)
@@ -6,7 +6,7 @@ export const Get = (url,params)=>{
   wx.showLoading(loadingConfig);
   return new Promise((resolve,reject)=>{
     wx.request({
-      url: url, //仅为示例，并非真实的接口地址
+      url:  assetsSrc + url, //仅为示例，并非真实的接口地址
       data: params,
       header: {
         "content-type": "application/json" // 默认值
@@ -34,7 +34,7 @@ export const Post = (url,params)=>{
   wx.showLoading(loadingConfig);
   return new Promise((resolve,reject)=>{
     wx.request({
-      url: url, //仅为示例，并非真实的接口地址
+      url: assetsSrc + url, //仅为示例，并非真实的接口地址
       data: params,
       header: {
         "content-type": "application/json" // 默认值
@@ -66,7 +66,7 @@ export const getContentFunc = (url)=>{
   wx.showLoading(loadingConfig);
   return new Promise((resolve,reject)=>{
     wx.request({
-      url: url, //仅为示例，并非真实的接口地址
+      url: assetsSrc + url, //仅为示例，并非真实的接口地址
  
       header: {
         "content-type": "application/json" // 默认值
