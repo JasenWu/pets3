@@ -1,7 +1,6 @@
 import {loadingConfig,assetsSrc } from "@models/index";
 //Get请求
 export const Get = (url,params)=>{
- 
   let para = {req: "readed"};
   wx.showLoading(loadingConfig);
   return new Promise((resolve,reject)=>{
@@ -13,16 +12,12 @@ export const Get = (url,params)=>{
       },
       method:"GET",
       success: res => {
-        
-        resolve(res)
         wx.hideLoading();
-
-         
+        return resolve(res)  
       },
       fail: res => {
-        reject(res);
         wx.hideLoading();
-
+        return reject(res);
       }
     })
     
@@ -45,14 +40,16 @@ export const Post = (url,params)=>{
         if (!res.data) {
           console.log("无数据退出");
         }
-        resolve(res)
+         
         wx.hideLoading();
+        return resolve(res) 
 
          
       },
       fail: res => {
-        reject(res);
         wx.hideLoading();
+        return reject(res);
+       
 
       }
     })
@@ -74,14 +71,16 @@ export const getContentFunc = (url)=>{
       method:"GET",
       success: res => {
         
-        resolve(res)
+        
         wx.hideLoading();
+        return resolve(res)
 
          
       },
       fail: res => {
-        reject(res);
+        
         wx.hideLoading();
+        return reject(res);
 
       }
     })

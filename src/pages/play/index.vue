@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="initAudio">
     <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details"></c-audio>
     <h1 class="layout_title">{{details.title}}</h1>
     <!-- 章节内容 -->
@@ -57,14 +57,8 @@ export default {
   methods: {
     pre() {
       this.initAudio = false;
-      let order = parseInt(this.playingItem.order);
-      if (order <= 1) {
-        this.noPre = true;
-
-        return;
-      }
-      order = order - 1;
-
+      let order = parseInt(this.playingItem.order) -1;
+ 
       wx.redirectTo({
         url:
           "/pages/play/main?unit=" +
@@ -75,11 +69,8 @@ export default {
     },
     next() {
       this.initAudio = false;
-      let order = parseInt(this.playingItem.order);
-
-      order = order + 1;
-      this.noPre = false;
-
+      let order = parseInt(this.playingItem.order) +1;
+ 
       wx.redirectTo({
         url:
           "/pages/play/main?unit=" +
@@ -124,12 +115,17 @@ export default {
         }
 
         let textName = `unit${unit}_children${order}`;
-        if (order == 1) {
+      
+        if (order <= 1) {
           this.noPre = true;
+        }else{
+          this.noPre = false;
         }
 
         if (order >= this.maxOrder) {
           this.noNext = true;
+        }else{
+          this.noNext = false;
         }
 
         try{  
