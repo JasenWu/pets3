@@ -68,7 +68,7 @@ export default {
       order=order-1;
       this.noNext = false;
  
-      wx.navigateTo({
+      wx.redirectTo({
         url:
           "/pages/play/main?unit=" +
           this.details.unit +
@@ -90,7 +90,7 @@ export default {
       order=order+1;
       this.noPre = false;
   
-      wx.navigateTo({
+      wx.redirectTo({
         url:
           "/pages/play/main?unit=" +
           this.details.unit +
@@ -162,9 +162,11 @@ export default {
 
     //用户退出页面
     this.$mp.page.onUnload = () => {
- 
-      this.$refs.audioEle.audioCtx.stop(); //销毁音频实例
-      this.initAudio = false;
+      if(this.$refs && this.$refs.audioEle){
+        this.$refs.audioEle.audioCtx.stop(); //销毁音频实例
+        this.initAudio = false;
+      }
+      
     };
   }
 };
