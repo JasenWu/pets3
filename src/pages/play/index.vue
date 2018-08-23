@@ -1,11 +1,11 @@
 <template>
   <div class="container" v-if="initAudio">
-    <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details"></c-audio>
+    <c-audio ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details"></c-audio>
     <h1 class="layout_title">{{details.title}}</h1>
     <!-- 章节内容 -->
-    <a @tap="pre" v-show="!noPre && initAudio" class="i_pre">pre</a>
-    <a @tap="next" v-show="!noNext && initAudio" class="i_next">next</a>
-    <section v-if="initAudio && contentData.contents">
+    <a @tap="pre" v-show="!noPre" class="i_pre">pre</a>
+    <a @tap="next" v-show="!noNext" class="i_next">next</a>
+    <section v-if="contentData.contents">
       <div class="layout_content">
         <ul>
           <li class="i_item" :class="{'layout_right':item.role == 2,'layout_left':item.role == 1,'layout_des':item.role == 0}" v-for="(item,index) in  contentData.contents" @tap="toggleZh(item,index)" :key="item.startTime">
@@ -106,11 +106,8 @@ export default {
         let keys = Object.keys(this.unitList[unit].children);
 
         this.maxOrder = Math.max(...keys);
-
-        console.log('maxOrder',this.maxOrder)
-
+ 
         if (order) {
-          //在具体的dialog
           this.details.title = `Unit ${unit}  ${title}-${order}`;
         }
 
@@ -128,8 +125,11 @@ export default {
           this.noNext = false;
         }
 
-        try{  
-          getContent(`contentData/${textName}.json`)
+        return textName;
+ 
+      }).then((textName)=>{
+ 
+           getContent(`contentData/${textName}.json`)
           .then(res => {
             let contentData = res.data;
 
@@ -145,15 +145,11 @@ export default {
 
             this.initAudio = true;
           })
-          .catch(err => {});
-
-        }catch(err){
-          console.log('err',err);
-        }
-
-        
+           
       })
-      .catch(err => {});
+      .catch(err => {
+        console.log('err',err)
+      });
 
     //用户退出页面
     this.$mp.page.onUnload = () => {
