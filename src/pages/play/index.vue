@@ -3,8 +3,8 @@
     <c-audio v-if="initAudio" ref="audioEle" :autoPlay="true" :playingItem="playingItem" :details="details"></c-audio>
     <h1 class="layout_title">{{details.title}}</h1>
     <!-- 章节内容 -->
-    <a   @tap="pre" v-show="!noPre && initAudio" class="i_pre">pre</a>
-    <a   @tap="next" v-show="!noNext && initAudio" class="i_next">next</a>
+    <a @tap="pre" v-show="!noPre && initAudio" class="i_pre">pre</a>
+    <a @tap="next" v-show="!noNext && initAudio" class="i_next">next</a>
     <section v-if="initAudio && contentData.contents">
       <div class="layout_content">
         <ul>
@@ -24,7 +24,6 @@
 </template>
 
 <script>
-
 import Audio from "@components/video.vue"; //Audio播放组件
 
 import { getList, getContent } from "@models/api";
@@ -38,7 +37,7 @@ export default {
       details: {
         title: "",
         unit: 0, //单元号,
-        maxOrder:1,
+        maxOrder: 1
       },
       unitList: {},
       playingItem: {
@@ -50,46 +49,22 @@ export default {
         contents: [],
         roles: {}
       },
-      noPre:false,
-      noNext:false,
-     
+      noPre: false,
+      noNext: false
     };
   },
 
   methods: {
-    pre(){
-      this.initAudio = false;
-      let order = parseInt(this.playingItem.order)
-      if(order <= 1){
-        this.noPre = true;
-   
-        return;
-      }
-      order=order-1;
-      this.noNext = false;
- 
-      wx.redirectTo({
-        url:
-          "/pages/play/main?unit=" +
-          this.details.unit +
-          "&contentOrder=" +
-          order
-      });
-      
-    },
-    next(){
+    pre() {
       this.initAudio = false;
       let order = parseInt(this.playingItem.order);
-      
-       if(order>=this.maxOrder){
-         this.noNext = true;
-        
-          return;
-       }
+      if (order <= 1) {
+        this.noPre = true;
 
-      order=order+1;
-      this.noPre = false;
-  
+        return;
+      }
+      order = order - 1;
+
       wx.redirectTo({
         url:
           "/pages/play/main?unit=" +
@@ -97,7 +72,21 @@ export default {
           "&contentOrder=" +
           order
       });
-       
+    },
+    next() {
+      this.initAudio = false;
+      let order = parseInt(this.playingItem.order);
+
+      order = order + 1;
+      this.noPre = false;
+
+      wx.redirectTo({
+        url:
+          "/pages/play/main?unit=" +
+          this.details.unit +
+          "&contentOrder=" +
+          order
+      });
     },
     toggleZh(item, index) {
       this.$set(
@@ -125,17 +114,26 @@ export default {
         let title = this.unitList[unit].children[order].title;
         let keys = Object.keys(this.unitList[unit].children);
 
-        this.maxOrder =  Math.max(...keys);
-       
+        this.maxOrder = Math.max(...keys);
+
+        console.log('maxOrder',this.maxOrder)
+
         if (order) {
           //在具体的dialog
           this.details.title = `Unit ${unit}  ${title}-${order}`;
         }
-        
 
         let textName = `unit${unit}_children${order}`;
+        if (order == 1) {
+          this.noPre = true;
+        }
 
-        getContent(`contentData/${textName}.json`)
+        if (order >= this.maxOrder) {
+          this.noNext = true;
+        }
+
+        try{  
+          getContent(`contentData/${textName}.json`)
           .then(res => {
             let contentData = res.data;
 
@@ -150,23 +148,23 @@ export default {
             this.playingItem.order = order;
 
             this.initAudio = true;
-
           })
-          .catch((err => {
-           
-          }));
-      })
-      .catch((err => {}));
+          .catch(err => {});
 
-   
+        }catch(err){
+          console.log('err',err);
+        }
+
+        
+      })
+      .catch(err => {});
 
     //用户退出页面
     this.$mp.page.onUnload = () => {
-      if(this.$refs && this.$refs.audioEle){
+      if (this.$refs && this.$refs.audioEle) {
         this.$refs.audioEle.audioCtx.stop(); //销毁音频实例
         this.initAudio = false;
       }
-      
     };
   }
 };
@@ -175,26 +173,24 @@ export default {
 <style scoped lang="less">
 .container {
   padding-bottom: 85px;
-  .btn{
+  .btn {
     position: fixed;
-    left:15px;
-    top:200px;
+    left: 15px;
+    top: 200px;
     padding: 10px;
-    color:#fff;
-    background: rgba(0,0,0,.5);
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
     border-radius: 5px;
     overflow: hidden;
   }
-  .i_pre{
+  .i_pre {
     .btn();
-    
   }
-  .i_next{
+  .i_next {
     .btn();
- 
+
     left: initial;
-    right:15px;
-    
+    right: 15px;
   }
 }
 .layout_title {
